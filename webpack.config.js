@@ -10,5 +10,14 @@ module.exports = {
   devServer: {
     hot: false,
     port: 8082
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: ['babel-loader']
+      }
+    ]
   }
 };

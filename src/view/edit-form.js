@@ -302,13 +302,17 @@ export default class EditForm extends SmartView {
   _showDisabled() {
     this.getElement().querySelectorAll(
       'fieldset, input:not(.visually-hidden), button, .event__offer-checkbox')
-      .forEach((element) => element.disabled = true);
+      .forEach((element) => {
+        element.disabled = true;
+      });
   }
 
   showEnabled() {
     this.getElement().querySelectorAll(
       'fieldset, input:not(.visually-hidden), button, .event__offer-checkbox')
-      .forEach((element) => element.disabled = false);
+      .forEach((element) => {
+        element.disabled = false;
+      });
   }
 
   _addFormCancelHandler(evt) {

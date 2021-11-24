@@ -200,7 +200,7 @@ export default class Trip {
   _renderSort() {
 
     if (this._sortingComponent) {
-      this._sortingComponent === null;
+      this._sortingComponent = null;
     }
 
     this._sortingComponent = new SortingView(this._currentSortType);

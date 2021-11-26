@@ -24,6 +24,9 @@ const filtersElement = siteHeaderElement.querySelector('.trip-controls__filters'
 const bodyElement = document.querySelector('.page-main .page-body__container');
 const tripEventsElement = document.querySelector('.trip-events');
 
+const newPointAddButton = siteHeaderElement.querySelector('.trip-main__event-add-btn');
+//...кнопка добавления точки
+
 const api = new Api(END_POINT, AUTHORIZATION);
 const filterModel = new FilterModel();
 const pointsModel = new PointsModel();
@@ -91,7 +94,9 @@ pointsModel.addObserver(() => {
   }
 });
 
-document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+newPointAddButton.disabled = true; //отключает кнопку на время загрузки данных
+
+newPointAddButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   tripPresenter.createPoint();
 });
@@ -112,12 +117,15 @@ Promise
       pointsModel.setDestinations(getDestinationsFromPoints(results[ARRAY_INDEX_TWO].value));
     } else {
       pointsModel.setDestinations([]);
-    }
+    } /* Если не загружены назначения, то они извлекаются из точек,
+        если не загружены точки, то назначениям присваивается []  */
 
     if (results[ARRAY_INDEX_TWO].status === 'fulfilled') {
       pointsModel.setPoints(UpdateType.INIT, results[ARRAY_INDEX_TWO].value);
     } else {
       pointsModel.setPoints(UpdateType.INIT, []);
     }
+
+    newPointAddButton.disabled = false; //включает кнопку после загрузки данных
 
   });

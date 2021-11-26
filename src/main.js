@@ -6,7 +6,8 @@ import TripPresenter from './presenter/trip.js';
 import PointsModel from './model/points.js';
 import FilterModel from './model/filter.js';
 import FilterPresenter from './presenter/filter.js';
-import { MenuItem, UpdateType, BlankPossibleOffers} from './utils/const.js';
+import { MenuItem, UpdateType, BlankPossibleOffers, ARRAY_INDEX_ZERO, ARRAY_INDEX_ONE,
+  ARRAY_INDEX_TWO} from './utils/const.js';
 import StatisticsView from './view/statistics.js';
 import { getMoneyByTypeData, getPointsNumberByTypeData, getDurationByTypeData}
   from  './utils/statistics.js';
@@ -22,6 +23,9 @@ const tripElement = siteHeaderElement.querySelector('.trip-main');
 const filtersElement = siteHeaderElement.querySelector('.trip-controls__filters');
 const bodyElement = document.querySelector('.page-main .page-body__container');
 const tripEventsElement = document.querySelector('.trip-events');
+
+const newPointAddButton = siteHeaderElement.querySelector('.trip-main__event-add-btn');
+//...кнопка добавления точки
 
 const api = new Api(END_POINT, AUTHORIZATION);
 const filterModel = new FilterModel();
@@ -90,37 +94,38 @@ pointsModel.addObserver(() => {
   }
 });
 
-document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+newPointAddButton.disabled = true; //отключает кнопку на время загрузки данных
+
+newPointAddButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   tripPresenter.createPoint();
 });
 
 Promise
-  .all([api.getOffers(), api.getDestinations(), api.getPoints()])
-  .then(([serverOffers, serverDestinations, serverPoints]) => {
+  .allSettled([api.getOffers(), api.getDestinations(), api.getPoints()])
+  .then((results) => {
 
-    if (Object.keys(serverOffers).length) {
-      //если не загрузились ОПЦИИ, то используется заглушка BlankPossibleOffers...
-      //...и работа происходит без опций
-      pointsModel.setOffers(serverOffers);
+    if (results[ARRAY_INDEX_ZERO].status === 'fulfilled') {
+      pointsModel.setOffers(results[ARRAY_INDEX_ZERO].value);
     } else {
       pointsModel.setOffers(BlankPossibleOffers);
     }
 
-    if (serverDestinations.length){
-      //если не загрузились НАЗНАЧЕНИЯ, то они извлекаются из ТОЧЕК...
-      //...и используются в дальнейшей работе
-      pointsModel.setDestinations(serverDestinations);
+    if (results[ARRAY_INDEX_ONE].status === 'fulfilled') {
+      pointsModel.setDestinations(results[ARRAY_INDEX_ONE].value);
+    } else if (results[ARRAY_INDEX_TWO].status === 'fulfilled') {
+      pointsModel.setDestinations(getDestinationsFromPoints(results[ARRAY_INDEX_TWO].value));
     } else {
-      pointsModel.setDestinations(getDestinationsFromPoints(serverPoints));
-    }
+      pointsModel.setDestinations([]);
+    } /* Если не загружены назначения, то они извлекаются из точек,
+        если не загружены точки, то назначениям присваивается []  */
 
-    if (serverPoints.length) {
-      //если не загрузились ТОЧКИ, то используется пустой массив...
-      //...и можно только добавлять и удалять свои ТОЧКИ
-      pointsModel.setPoints(UpdateType.INIT, serverPoints);
+    if (results[ARRAY_INDEX_TWO].status === 'fulfilled') {
+      pointsModel.setPoints(UpdateType.INIT, results[ARRAY_INDEX_TWO].value);
     } else {
       pointsModel.setPoints(UpdateType.INIT, []);
     }
+
+    newPointAddButton.disabled = false; //включает кнопку после загрузки данных
 
   });

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {ARRAY_INDEX_ZERO, ARRAY_INDEX_ONE} from './statistics.js';
+import {ARRAY_INDEX_ZERO, ARRAY_INDEX_ONE} from './const.js';
 
 const INITIAL_OPTIONS_TOTAL_PRICE = 0;
 const ARRAY_INDEX_TWO = 2;

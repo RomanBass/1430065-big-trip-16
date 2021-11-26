@@ -1,5 +1,9 @@
 import dayjs from 'dayjs';
 
+export const ARRAY_INDEX_ZERO = 0;
+export const ARRAY_INDEX_ONE = 1;
+export const ARRAY_INDEX_TWO = 2;
+
 export const TYPES = ['taxi', 'bus', 'train', 'ship', 'transport', 'drive', 'flight',
   'check-in', 'sightseeing', 'restaurant'];
 

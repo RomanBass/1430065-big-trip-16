@@ -1,7 +1,5 @@
-import { TYPES } from './const.js';
+import { TYPES, ARRAY_INDEX_ZERO, ARRAY_INDEX_ONE } from './const.js';
 
-export const ARRAY_INDEX_ZERO = 0;
-export const ARRAY_INDEX_ONE = 1;
 const INITIAL_TYPE_PRICE = 0;
 const INITIAL_TYPE_NUMBER = 0;
 const INITIAL_TYPE_DURATION = 0;

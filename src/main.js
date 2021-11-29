@@ -129,3 +129,7 @@ Promise
     newPointAddButton.disabled = false; //включает кнопку после загрузки данных
 
   });
+
+window.addEventListener('load', () => {
+  navigator.serviceWorker.register('/sw.js');
+});

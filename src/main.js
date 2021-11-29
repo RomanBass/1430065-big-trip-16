@@ -11,7 +11,7 @@ import { MenuItem, UpdateType, BlankPossibleOffers, ARRAY_INDEX_ZERO, ARRAY_INDE
 import StatisticsView from './view/statistics.js';
 import { getMoneyByTypeData, getPointsNumberByTypeData, getDurationByTypeData}
   from  './utils/statistics.js';
-import Api from './api.js';
+import Api from './api/api.js';
 import { getDestinationsFromPoints } from './utils/route.js';
 
 const AUTHORIZATION = 'Basic df9df9df8sd8fg8u';

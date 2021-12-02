@@ -36,3 +36,5 @@ export const updateItem = (items, update) => { // заменяет элемен�
     ...items.slice(index + 1),
   ];
 };
+
+export const isOnline = () => window.navigator.onLine;

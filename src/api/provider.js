@@ -45,10 +45,25 @@ export default class Provider {
       .then((offers) => PointsModel.adaptOffersToClient(offers));
   }
 
+  // getDestinations() {
+  //   return this._load({url: 'destinations'})
+  //     .then(Api.toJSON)
+  //     .then((destinations) => destinations);
+  // }
+
   getDestinations() {
-    return this._load({url: 'destinations'})
-      .then(Api.toJSON)
-      .then((destinations) => destinations);
+    if (isOnline()) {
+      return this._api.getDestinations()
+        .then((destinations) => {
+          const items = createStoreStructure(destinations);
+          this._store.setItems(items);
+          return destinations;
+        });
+    }
+
+    const storeDestinations = Object.values(this._store.getItems());
+
+    return Promise.resolve(storeDestinations);
   }
 
   // updatePoint(point) {

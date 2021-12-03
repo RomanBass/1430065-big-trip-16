@@ -133,3 +133,4 @@ Promise
 window.addEventListener('load', () => {
   navigator.serviceWorker.register('/sw.js');
 });
+

@@ -28,7 +28,7 @@ export default class Provider {
     if (isOnline()) {
       return this._api.getPoints()
         .then((points) => {
-          const items = createStoreStructure(points.map(PointsModel.adaptToServer));
+          const items = createStoreStructure(points.map(PointsModel.adaptPointsToServer));
           this._store.setItems(items);
           return points;
         });
@@ -36,13 +36,28 @@ export default class Provider {
 
     const storePoints = Object.values(this._store.getItems());
 
-    return Promise.resolve(storePoints.map(PointsModel.adaptToClient));
+    return Promise.resolve(storePoints.map(PointsModel.adaptPointsToClient));
   }
 
+  // getOffers() {
+  //   return this._load({url: 'offers'})
+  //     .then(Api.toJSON)
+  //     .then((offers) => PointsModel.adaptOffersToClient(offers));
+  // }
+
   getOffers() {
-    return this._load({url: 'offers'})
-      .then(Api.toJSON)
-      .then((offers) => PointsModel.adaptOffersToClient(offers));
+    if (isOnline()) {
+      return this._api.getOffers()
+        .then((offers) => {
+          const items = createStoreStructure(offers);
+          this._store.setItems(items);
+          return offers;
+        });
+    }
+
+    const storeOffers = Object.values(this._store.getItems());
+
+    return Promise.resolve(storeOffers);
   }
 
   // getDestinations() {
@@ -81,12 +96,12 @@ export default class Provider {
     if (isOnline()) {
       return this._api.updatePoint(point)
         .then((updatedPoint) => {
-          this._store.setItem(updatedPoint.id, PointsModel.adaptToServer(updatedPoint));
+          this._store.setItem(updatedPoint.id, PointsModel.adaptPointsToServer(updatedPoint));
           return updatedPoint;
         });
     }
 
-    this._store.setItem(point.id, PointsModel.adaptToServer(Object.assign({}, point)));
+    this._store.setItem(point.id, PointsModel.adaptPointsToServer(Object.assign({}, point)));
 
     return Promise.resolve(point);
   }
@@ -106,7 +121,7 @@ export default class Provider {
     if (isOnline()) {
       return this._api.addPoint(point)
         .then((newPoint) => {
-          this._store.setItem(newPoint.id, PointsModel.adaptToServer(newPoint));
+          this._store.setItem(newPoint.id, PointsModel.adaptPointsToServer(newPoint));
           return newPoint;
         });
     }

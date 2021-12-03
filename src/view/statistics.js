@@ -242,7 +242,7 @@ export default class Statistics extends SmartView {
     this._setCharts();
   }
 
-  getTemplate() {
+  get template() {
     return createStatisticsTemplate(
       this._data.tripMoneyData,
       this._data.tripTypeData,

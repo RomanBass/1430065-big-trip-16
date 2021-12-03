@@ -15,7 +15,7 @@ export default class SiteMenu extends AbstractView {
     this._menuClickHandler = this._menuClickHandler.bind(this);
   }
 
-  getTemplate() {
+  get template() {
     return createSiteMenuTemplate();
   }
 

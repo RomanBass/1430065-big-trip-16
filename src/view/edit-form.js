@@ -238,7 +238,7 @@ export default class EditForm extends SmartView {
     this._setDateToPicker();
   }
 
-  getTemplate() {
+  get template() {
     return createEditFormTemplate(this._data,  this._possibleOffers, this._possibleDestinations);
   }
 

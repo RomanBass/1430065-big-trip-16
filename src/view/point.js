@@ -74,7 +74,7 @@ export default class Point extends AbstractView {
     this._favoriteButtonClickHandler = this._favoriteButtonClickHandler.bind(this);
   }
 
-  getTemplate() {
+  get template() {
     return createPointTemplate(this._point, this._possibleOffers);
   }
 

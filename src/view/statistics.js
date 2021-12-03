@@ -264,9 +264,9 @@ export default class Statistics extends SmartView {
       this._durationChart = null;
     }
 
-    const moneyCtx = this.getElement().querySelector('#money');
-    const typeCtx = this.getElement().querySelector('#type');
-    const durationCtx = this.getElement().querySelector('#time-spend');
+    const moneyCtx = this.element.querySelector('#money');
+    const typeCtx = this.element.querySelector('#type');
+    const durationCtx = this.element.querySelector('#time-spend');
     const BAR_HEIGHT = 55;
 
     moneyCtx.height = BAR_HEIGHT * Object.values(this._data.tripMoneyData).length; // Рассчитаем высоту канваса в зависимости от того, сколько данных в него будет передаваться

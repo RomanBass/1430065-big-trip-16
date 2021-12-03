@@ -49,6 +49,6 @@ export default class Filter extends AbstractView {
 
   setSortTypeChangeHandler(callback) {
     this._callback.sortTypeChange = callback;
-    this.getElement().addEventListener('change', this._sortTypeChangeHandler);
+    this.element.addEventListener('change', this._sortTypeChangeHandler);
   }
 }

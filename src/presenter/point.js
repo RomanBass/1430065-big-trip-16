@@ -70,7 +70,7 @@ export default class Point {
   }
 
   _replacePointToForm() {
-    replace(this._editFormComponent, this._pointComponent.getElement());
+    replace(this._editFormComponent, this._pointComponent.element);
     document.addEventListener('keydown', this._escKeyDownHandler);
     this._changeMode();
     this._mode = Mode.EDITING;

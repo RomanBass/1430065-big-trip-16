@@ -7,11 +7,11 @@ export const RenderPosition = {
 
 export const render = (container, child, place) => {
   if (container instanceof Abstract) {
-    container = container.getElement();
+    container = container.element;
   }
 
   if (child instanceof Abstract) {
-    child = child.getElement();
+    child = child.element;
   }
 
   switch (place) {
@@ -36,11 +36,11 @@ export const renderTemplate = (container, template, place) => {
 
 export const replace = (newChild, oldChild) => {
   if (oldChild instanceof Abstract) {
-    oldChild = oldChild.getElement();
+    oldChild = oldChild.element;
   }
 
   if (newChild instanceof Abstract) {
-    newChild = newChild.getElement();
+    newChild = newChild.element;
   }
 
   const parent = oldChild.parentElement;
@@ -61,6 +61,6 @@ export const remove = (component) => {
     throw new Error('Can remove only components');
   }
 
-  component.getElement().remove();
+  component.element.remove();
   component.removeElement();
 };

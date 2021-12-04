@@ -8,30 +8,31 @@ export default class Abstract {
       throw new Error('Can\'t instantiate Abstract, only concrete one.');
     }
 
-    this._element = null;
     this._callback = {};
   }
 
-  getTemplate() {
+  #element = null;
+
+  get template() {
     throw new Error('Abstract method not implemented: getTemplate');
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this._element;
+    return this.#element;
   }
 
   removeElement() {
-    this._element = null;
+    this.#element = null;
   }
 
   shake() {
-    this.getElement().classList.add('shake');
+    this.element.classList.add('shake');
     setTimeout(() => {
-      this.getElement().classList.remove('shake');
+      this.element.classList.remove('shake');
     }, SHAKE_ANIMATION_TIMEOUT);
   }
 }

@@ -56,7 +56,7 @@ export default class Trip {
     this._currentSortType = SortType.BY_DATE_FROM;
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
 
-    if (!this._tripContainer.contains(this._eventsListComponent.getElement())) {
+    if (!this._tripContainer.contains(this._eventsListComponent.element)) {
       this._renderEventsList();
     }
 

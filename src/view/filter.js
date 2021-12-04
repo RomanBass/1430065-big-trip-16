@@ -41,7 +41,7 @@ export default class Filter extends AbstractView {
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
 
-  getTemplate() {
+  get template() {
     return createFiltersTemplate(this._currentFilterType, this._AreFiltersAvalable);
   }
 
@@ -51,6 +51,6 @@ export default class Filter extends AbstractView {
 
   setFilterTypeChangeHandler(callback) {
     this._callback.filterTypeChange = callback;
-    this.getElement().addEventListener('change', this._filterTypeChangeHandler);
+    this.element.addEventListener('change', this._filterTypeChangeHandler);
   }
 }

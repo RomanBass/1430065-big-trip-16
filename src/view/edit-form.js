@@ -238,7 +238,7 @@ export default class EditForm extends SmartView {
     this._setDateToPicker();
   }
 
-  getTemplate() {
+  get template() {
     return createEditFormTemplate(this._data,  this._possibleOffers, this._possibleDestinations);
   }
 
@@ -249,7 +249,7 @@ export default class EditForm extends SmartView {
 
   setEditFormRollupButtonClickHandler(callback) {
 
-    const editRollupButton = this.getElement().querySelector('.event__rollup-btn');
+    const editRollupButton = this.element.querySelector('.event__rollup-btn');
     if (editRollupButton !== null) {
       //...чтоб не выдавало ошибку addEventLister от null при отрисовке формы добавления
       this._callback.editFormRollupButtonClick = callback;
@@ -266,16 +266,16 @@ export default class EditForm extends SmartView {
 
   setEditFormSubmitButtonClickHandler(callback) {
     this._callback.editFormSubmitButtonClick = callback;
-    this.getElement().querySelector('form')
+    this.element.querySelector('form')
       .addEventListener('submit', this._editFormSubmitButtonClickHandler);
   }
 
   _showSaving() {
-    this.getElement().querySelector('.event__save-btn').textContent = 'Saving...';
+    this.element.querySelector('.event__save-btn').textContent = 'Saving...';
   }
 
   showSave() {
-    this.getElement().querySelector('.event__save-btn').textContent = 'Save';
+    this.element.querySelector('.event__save-btn').textContent = 'Save';
   }
 
   _deletePointClickHandler(evt) {
@@ -287,20 +287,20 @@ export default class EditForm extends SmartView {
 
   setDeletePointClickHandler(callback) {
     this._callback.deletePointClickHandler = callback;
-    this.getElement().querySelector('.event__reset-btn')
+    this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this._deletePointClickHandler);
   }
 
   _showDeleting() {
-    this.getElement().querySelector('.event__reset-btn').textContent = 'Deleting...';
+    this.element.querySelector('.event__reset-btn').textContent = 'Deleting...';
   }
 
   showDelete() {
-    this.getElement().querySelector('.event__reset-btn').textContent = 'Delete';
+    this.element.querySelector('.event__reset-btn').textContent = 'Delete';
   }
 
   _showDisabled() {
-    this.getElement().querySelectorAll(
+    this.element.querySelectorAll(
       'fieldset, input:not(.visually-hidden), button, .event__offer-checkbox')
       .forEach((element) => {
         element.disabled = true;
@@ -308,7 +308,7 @@ export default class EditForm extends SmartView {
   }
 
   showEnabled() {
-    this.getElement().querySelectorAll(
+    this.element.querySelectorAll(
       'fieldset, input:not(.visually-hidden), button, .event__offer-checkbox')
       .forEach((element) => {
         element.disabled = false;
@@ -323,7 +323,7 @@ export default class EditForm extends SmartView {
 
   setAddFormCancelHandler(callback) {
     this._callback.addFormCancelHandler = callback;
-    this.getElement().querySelector('.event__reset-btn')
+    this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this._addFormCancelHandler);
   }
 
@@ -349,9 +349,9 @@ export default class EditForm extends SmartView {
         },
       });
     } else {
-      this.getElement().querySelector('.event__input--destination')
+      this.element.querySelector('.event__input--destination')
         .setCustomValidity('This city is not available, please select one from the popup list.');
-      this.getElement().querySelector('.event__input--destination').reportValidity();
+      this.element.querySelector('.event__input--destination').reportValidity();
     }
 
   }
@@ -394,16 +394,16 @@ export default class EditForm extends SmartView {
   }
 
   _setInnerHandlers() { //вешает "внутренние" обработчики на форму редактирования
-    this.getElement().querySelector('.event__type-group')
+    this.element.querySelector('.event__type-group')
       .addEventListener('change', this._typeFieldsetChangeHandler);
     //...вешает обработчик на fieldset выбора типа точки
-    this.getElement().querySelector('.event__input--destination')
+    this.element.querySelector('.event__input--destination')
       .addEventListener('change', this._destinationInputChangeHandler);
     //...вешает обработчик на input ввода названия города
-    this.getElement().querySelector('.event__input--price')
+    this.element.querySelector('.event__input--price')
       .addEventListener('change', this._basePriceInputChangeHandler);
     //..вешает обработчик на input ввода цены
-    this.getElement().querySelector('.event__available-offers')
+    this.element.querySelector('.event__available-offers')
       .addEventListener('change', this._offersChangeHandler);
     //..вешает обработчик на опции
   }
@@ -415,7 +415,7 @@ export default class EditForm extends SmartView {
     }
 
     this._dateFromPicker = flatpickr(
-      this.getElement().querySelector('.event__field-group--time input:nth-child(2)'),
+      this.element.querySelector('.event__field-group--time input:nth-child(2)'),
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
@@ -446,7 +446,7 @@ export default class EditForm extends SmartView {
     }
 
     this._dateToPicker = flatpickr(
-      this.getElement().querySelector('.event__field-group--time input:nth-child(4)'),
+      this.element.querySelector('.event__field-group--time input:nth-child(4)'),
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',

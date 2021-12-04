@@ -11,7 +11,7 @@ export default class NoPoint extends AbstractView {
     this._message = message;
   }
 
-  getTemplate() {
+  get template() {
     return createNoPointTemplate(this._message);
   }
 }

@@ -39,7 +39,7 @@ export default class Filter extends AbstractView {
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
 
-  getTemplate() {
+  get template() {
     return createSortingTemplate(this._currentSortType);
   }
 
@@ -49,6 +49,6 @@ export default class Filter extends AbstractView {
 
   setSortTypeChangeHandler(callback) {
     this._callback.sortTypeChange = callback;
-    this.getElement().addEventListener('change', this._sortTypeChangeHandler);
+    this.element.addEventListener('change', this._sortTypeChangeHandler);
   }
 }

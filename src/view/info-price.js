@@ -19,7 +19,7 @@ export default class InfoAndPrice extends SmartView {
     this._data = {tripPrice: price, tripDate: date, tripName: name};
   }
 
-  getTemplate() {
+  get template() {
     return createInfoAndPriceTemplate(this._data.tripPrice, this._data.tripDate, this._data.tripName);
   }
 

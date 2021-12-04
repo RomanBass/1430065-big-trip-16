@@ -21,7 +21,7 @@ export default class SiteMenu extends AbstractView {
 
   _menuClickHandler(evt) {
     evt.preventDefault();
-    this._callback.menuClick(evt.target.dataset.optionName);
+    this.#callback.menuClick(evt.target.dataset.optionName);
 
     if (!evt.target.classList.contains('trip-tabs__btn--active')) {
       const prevActiveMenuOption = this.element.querySelector('.trip-tabs__btn--active');
@@ -34,7 +34,7 @@ export default class SiteMenu extends AbstractView {
   }
 
   setMenuClickHandler(callback) {
-    this._callback.menuClick = callback;
+    this.#callback.menuClick = callback;
     this.element.addEventListener('click', this._menuClickHandler);
   }
 

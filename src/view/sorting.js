@@ -44,11 +44,11 @@ export default class Filter extends AbstractView {
   }
 
   _sortTypeChangeHandler(evt) {
-    this._callback.sortTypeChange(evt.target.value);
+    this.#callback.sortTypeChange(evt.target.value);
   }
 
   setSortTypeChangeHandler(callback) {
-    this._callback.sortTypeChange = callback;
+    this.#callback.sortTypeChange = callback;
     this.element.addEventListener('change', this._sortTypeChangeHandler);
   }
 }

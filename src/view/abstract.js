@@ -3,15 +3,16 @@ import { createElement } from '../utils/render';
 const SHAKE_ANIMATION_TIMEOUT = 600;
 
 export default class Abstract {
+  #element = null;
+  #callback = null;
+
   constructor() {
     if (new.target === Abstract) {
       throw new Error('Can\'t instantiate Abstract, only concrete one.');
     }
 
-    this._callback = {};
+    this.#callback = {};
   }
-
-  #element = null;
 
   get template() {
     throw new Error('Abstract method not implemented: getTemplate');

@@ -80,21 +80,21 @@ export default class Point extends AbstractView {
 
   _pointRollupButtonClickHandler(evt) {
     evt.preventDefault();
-    this._callback.pointRollupButtonClick();
+    this.#callback.pointRollupButtonClick();
   }
 
   setPointRollupButtonClickHandler(callback) {
-    this._callback.pointRollupButtonClick = callback;
+    this.#callback.pointRollupButtonClick = callback;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this._pointRollupButtonClickHandler);
   }
 
   _favoriteButtonClickHandler(evt) { // обработчик клика по звёздочке
     evt.preventDefault();
-    this._callback.favoriteButtonClick();
+    this.#callback.favoriteButtonClick();
   }
 
   setFavoriteButtonClickHandler(callback) { // установщик обработчика клика по стрелке
-    this._callback.favoriteButtonClick = callback;
+    this.#callback.favoriteButtonClick = callback;
     this.element.querySelector('.event__favorite-btn').addEventListener('click', this._favoriteButtonClickHandler);
   }
 }

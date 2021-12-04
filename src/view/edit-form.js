@@ -244,7 +244,7 @@ export default class EditForm extends SmartView {
 
   _editFormRollupButtonClickHandler(evt) {
     evt.preventDefault();
-    this._callback.editFormRollupButtonClick();
+    this.#callback.editFormRollupButtonClick();
   }
 
   setEditFormRollupButtonClickHandler(callback) {
@@ -252,7 +252,7 @@ export default class EditForm extends SmartView {
     const editRollupButton = this.element.querySelector('.event__rollup-btn');
     if (editRollupButton !== null) {
       //...чтоб не выдавало ошибку addEventLister от null при отрисовке формы добавления
-      this._callback.editFormRollupButtonClick = callback;
+      this.#callback.editFormRollupButtonClick = callback;
       editRollupButton.addEventListener('click', this._editFormRollupButtonClickHandler);
     }
   }
@@ -261,11 +261,11 @@ export default class EditForm extends SmartView {
     evt.preventDefault();
     this._showSaving();
     this._showDisabled();
-    this._callback.editFormSubmitButtonClick(this._data);
+    this.#callback.editFormSubmitButtonClick(this._data);
   }
 
   setEditFormSubmitButtonClickHandler(callback) {
-    this._callback.editFormSubmitButtonClick = callback;
+    this.#callback.editFormSubmitButtonClick = callback;
     this.element.querySelector('form')
       .addEventListener('submit', this._editFormSubmitButtonClickHandler);
   }
@@ -282,11 +282,11 @@ export default class EditForm extends SmartView {
     evt.preventDefault();
     this._showDeleting();
     this._showDisabled();
-    this._callback.deletePointClickHandler(this._data);
+    this.#callback.deletePointClickHandler(this._data);
   }
 
   setDeletePointClickHandler(callback) {
-    this._callback.deletePointClickHandler = callback;
+    this.#callback.deletePointClickHandler = callback;
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this._deletePointClickHandler);
   }
@@ -318,11 +318,11 @@ export default class EditForm extends SmartView {
   _addFormCancelHandler(evt) {
     //...добавляет обработчик на кнопку Cancel для удаления формы добавления
     evt.preventDefault();
-    this._callback.addFormCancelHandler();
+    this.#callback.addFormCancelHandler();
   }
 
   setAddFormCancelHandler(callback) {
-    this._callback.addFormCancelHandler = callback;
+    this.#callback.addFormCancelHandler = callback;
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this._addFormCancelHandler);
   }
@@ -389,8 +389,8 @@ export default class EditForm extends SmartView {
     this._setInnerHandlers();
     this._setDateFromPicker();
     this._setDateToPicker();
-    this.setEditFormRollupButtonClickHandler(this._callback.editFormRollupButtonClick);
-    this.setEditFormSubmitButtonClickHandler(this._callback.editFormSubmitButtonClick);
+    this.setEditFormRollupButtonClickHandler(this.#callback.editFormRollupButtonClick);
+    this.setEditFormSubmitButtonClickHandler(this.#callback.editFormSubmitButtonClick);
   }
 
   _setInnerHandlers() { //вешает "внутренние" обработчики на форму редактирования

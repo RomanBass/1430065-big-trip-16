@@ -6,12 +6,14 @@ const createNoPointTemplate = (filterType) => (
 );
 
 export default class NoPoint extends AbstractView {
+  #message = null;
+
   constructor(message) {
     super();
-    this._message = message;
+    this.#message = message;
   }
 
   get template() {
-    return createNoPointTemplate(this._message);
+    return createNoPointTemplate(this.#message);
   }
 }

@@ -31,24 +31,24 @@ const createSortingTemplate = (currentSortType) => (
 );
 
 export default class Filter extends AbstractView {
+  #currentSortType = null;
+
   constructor(currentSortType) {
     super();
 
-    this._currentSortType = currentSortType;
-
-    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
+    this.#currentSortType = currentSortType;
   }
 
   get template() {
-    return createSortingTemplate(this._currentSortType);
+    return createSortingTemplate(this.#currentSortType);
   }
 
-  _sortTypeChangeHandler(evt) {
+  #sortTypeChangeHandler = (evt) => {
     this._callback.sortTypeChange(evt.target.value);
   }
 
-  setSortTypeChangeHandler(callback) {
+  setSortTypeChangeHandler = (callback) => {
     this._callback.sortTypeChange = callback;
-    this.element.addEventListener('change', this._sortTypeChangeHandler);
+    this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 }

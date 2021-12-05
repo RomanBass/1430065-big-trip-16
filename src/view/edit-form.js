@@ -214,63 +214,66 @@ const createEditFormTemplate = (
 };
 
 export default class EditForm extends SmartView {
+  #dateFromPicker = null;
+  #dateToPicker = null;
+  #possibleOffers = null;
+  #possibleDestinations = null;
+
   constructor(point = BlankPoint, possibleOffers, possibleDestinations) {
     super();
     this._data = point; // this._point заменён на this._data чтобы отнаследоваться от SmartView
-    this._dateFromPicker = null;
-    this._dateToPicker = null;
-    this._possibleOffers = possibleOffers;
-    this._possibleDestinations = possibleDestinations;
+    this.#possibleOffers = possibleOffers;
+    this.#possibleDestinations = possibleDestinations;
 
-    this._editFormRollupButtonClickHandler = this._editFormRollupButtonClickHandler.bind(this);
-    this._editFormSubmitButtonClickHandler = this._editFormSubmitButtonClickHandler.bind(this);
-    this._typeFieldsetChangeHandler = this._typeFieldsetChangeHandler.bind(this);
-    this._destinationInputChangeHandler = this._destinationInputChangeHandler.bind(this);
-    this._dateFromChangeHandler = this._dateFromChangeHandler.bind(this);
-    this._dateToChangeHandler = this._dateToChangeHandler.bind(this);
-    this._basePriceInputChangeHandler = this._basePriceInputChangeHandler.bind(this);
-    this._offersChangeHandler = this._offersChangeHandler.bind(this);
-    this._deletePointClickHandler = this._deletePointClickHandler.bind(this);
-    this._addFormCancelHandler = this._addFormCancelHandler.bind(this);
+    //this.#editFormRollupButtonClickHandler = this.#editFormRollupButtonClickHandler.bind(this);
+    //this._editFormSubmitButtonClickHandler = this._editFormSubmitButtonClickHandler.bind(this);
+    //this._typeFieldsetChangeHandler = this._typeFieldsetChangeHandler.bind(this);
+    //this._destinationInputChangeHandler = this._destinationInputChangeHandler.bind(this);
+    //this._dateFromChangeHandler = this._dateFromChangeHandler.bind(this);
+    //this._dateToChangeHandler = this._dateToChangeHandler.bind(this);
+    //this._basePriceInputChangeHandler = this._basePriceInputChangeHandler.bind(this);
+    //this._offersChangeHandler = this._offersChangeHandler.bind(this);
+    //this._deletePointClickHandler = this._deletePointClickHandler.bind(this);
+    //this._addFormCancelHandler = this._addFormCancelHandler.bind(this);
 
-    this._setInnerHandlers();
-    this._setDateFromPicker();
-    this._setDateToPicker();
+    this.#setInnerHandlers();
+    this.#setDateFromPicker();
+    this.#setDateToPicker();
   }
 
   get template() {
-    return createEditFormTemplate(this._data,  this._possibleOffers, this._possibleDestinations);
+    return createEditFormTemplate(this._data,  this.#possibleOffers, this.#possibleDestinations);
   }
 
-  _editFormRollupButtonClickHandler(evt) {
+  #editFormRollupButtonClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.editFormRollupButtonClick();
   }
 
-  setEditFormRollupButtonClickHandler(callback) {
+  setEditFormRollupButtonClickHandler = (callback) => {
 
     const editRollupButton = this.element.querySelector('.event__rollup-btn');
     if (editRollupButton !== null) {
       //...чтоб не выдавало ошибку addEventLister от null при отрисовке формы добавления
       this._callback.editFormRollupButtonClick = callback;
-      editRollupButton.addEventListener('click', this._editFormRollupButtonClickHandler);
+      editRollupButton.addEventListener('click', this.#editFormRollupButtonClickHandler);
     }
   }
 
-  _editFormSubmitButtonClickHandler(evt) {
+  #editFormSubmitButtonClickHandler = (evt) => {
     evt.preventDefault();
-    this._showSaving();
-    this._showDisabled();
+    this.#showSaving();
+    this.#showDisabled();
     this._callback.editFormSubmitButtonClick(this._data);
   }
 
-  setEditFormSubmitButtonClickHandler(callback) {
+  setEditFormSubmitButtonClickHandler = (callback) => {
     this._callback.editFormSubmitButtonClick = callback;
     this.element.querySelector('form')
-      .addEventListener('submit', this._editFormSubmitButtonClickHandler);
+      .addEventListener('submit', this.#editFormSubmitButtonClickHandler);
   }
 
-  _showSaving() {
+  #showSaving = () => {
     this.element.querySelector('.event__save-btn').textContent = 'Saving...';
   }
 
@@ -278,20 +281,20 @@ export default class EditForm extends SmartView {
     this.element.querySelector('.event__save-btn').textContent = 'Save';
   }
 
-  _deletePointClickHandler(evt) {
+  #deletePointClickHandler = (evt) => {
     evt.preventDefault();
-    this._showDeleting();
-    this._showDisabled();
+    this.#showDeleting();
+    this.#showDisabled();
     this._callback.deletePointClickHandler(this._data);
   }
 
   setDeletePointClickHandler(callback) {
     this._callback.deletePointClickHandler = callback;
     this.element.querySelector('.event__reset-btn')
-      .addEventListener('click', this._deletePointClickHandler);
+      .addEventListener('click', this.#deletePointClickHandler);
   }
 
-  _showDeleting() {
+  #showDeleting = () => {
     this.element.querySelector('.event__reset-btn').textContent = 'Deleting...';
   }
 
@@ -299,7 +302,7 @@ export default class EditForm extends SmartView {
     this.element.querySelector('.event__reset-btn').textContent = 'Delete';
   }
 
-  _showDisabled() {
+  #showDisabled = () => {
     this.element.querySelectorAll(
       'fieldset, input:not(.visually-hidden), button, .event__offer-checkbox')
       .forEach((element) => {
@@ -315,7 +318,7 @@ export default class EditForm extends SmartView {
       });
   }
 
-  _addFormCancelHandler(evt) {
+  #addFormCancelHandler = (evt) => {
     //...добавляет обработчик на кнопку Cancel для удаления формы добавления
     evt.preventDefault();
     this._callback.addFormCancelHandler();
@@ -324,20 +327,20 @@ export default class EditForm extends SmartView {
   setAddFormCancelHandler(callback) {
     this._callback.addFormCancelHandler = callback;
     this.element.querySelector('.event__reset-btn')
-      .addEventListener('click', this._addFormCancelHandler);
+      .addEventListener('click', this.#addFormCancelHandler);
   }
 
-  _typeFieldsetChangeHandler(evt) { //обработчик fieldset по изменению типа точки
+  #typeFieldsetChangeHandler = (evt) => { //обработчик fieldset по изменению типа точки
     this.updateData({
       type: evt.target.value,
-      offers:  this._possibleOffers[evt.target.value],
+      offers:  this.#possibleOffers[evt.target.value],
     });
   }
 
-  _destinationInputChangeHandler(evt) { //обработчик input ввода названия города
+  #destinationInputChangeHandler = (evt) => { //обработчик input ввода названия города
 
     const NewDestination =
-    this._possibleDestinations.find((destination) => destination.name === evt.target.value);
+    this.#possibleDestinations.find((destination) => destination.name === evt.target.value);
     //...находит в datalist введёный город и присваивает данной константе
 
     if (NewDestination) { // Если введёный город есть в datalist, то производит изменение.
@@ -356,12 +359,12 @@ export default class EditForm extends SmartView {
 
   }
 
-  _basePriceInputChangeHandler(evt) { //обработчик input ввода стоимости
+  #basePriceInputChangeHandler = (evt) => { //обработчик input ввода стоимости
     this.updateData({basePrice: parseInt(evt.target.value, RADIX_10)});
     //...обновляются данные точки в части стоимости
   }
 
-  _offersChangeHandler(evt) { //обработчик выбора опций
+  #offersChangeHandler = (evt) => { //обработчик выбора опций
     const clickedOptionTitle = evt.target.parentElement.querySelector('label span:first-child')
       .textContent; //достаёт из разметки наименование кликУемой опции
 
@@ -386,85 +389,71 @@ export default class EditForm extends SmartView {
   }
 
   restoreHandlers() { //восстанавливает все необходимые обработчики на новую форму редактирования
-    this._setInnerHandlers();
-    this._setDateFromPicker();
-    this._setDateToPicker();
+    this.#setInnerHandlers();
+    this.#setDateFromPicker();
+    this.#setDateToPicker();
     this.setEditFormRollupButtonClickHandler(this._callback.editFormRollupButtonClick);
     this.setEditFormSubmitButtonClickHandler(this._callback.editFormSubmitButtonClick);
   }
 
-  _setInnerHandlers() { //вешает "внутренние" обработчики на форму редактирования
+  #setInnerHandlers = () => { //вешает "внутренние" обработчики на форму редактирования
     this.element.querySelector('.event__type-group')
-      .addEventListener('change', this._typeFieldsetChangeHandler);
+      .addEventListener('change', this.#typeFieldsetChangeHandler);
     //...вешает обработчик на fieldset выбора типа точки
     this.element.querySelector('.event__input--destination')
-      .addEventListener('change', this._destinationInputChangeHandler);
+      .addEventListener('change', this.#destinationInputChangeHandler);
     //...вешает обработчик на input ввода названия города
     this.element.querySelector('.event__input--price')
-      .addEventListener('change', this._basePriceInputChangeHandler);
+      .addEventListener('change', this.#basePriceInputChangeHandler);
     //..вешает обработчик на input ввода цены
     this.element.querySelector('.event__available-offers')
-      .addEventListener('change', this._offersChangeHandler);
+      .addEventListener('change', this.#offersChangeHandler);
     //..вешает обработчик на опции
   }
 
-  _setDateFromPicker() { // устанавливает окно ввода даты старта
-    if (this._dateFromPicker) { // удаляет дом-мусор от ранее созданных окон flatpicker-а
-      this._dateFromPicker.destroy(); // команда flatpicker-а
-      this._dateFromPicker = null;
+  #setDateFromPicker = () => { // устанавливает окно ввода даты старта
+    if (this.#dateFromPicker) { // удаляет дом-мусор от ранее созданных окон flatpicker-а
+      this.#dateFromPicker.destroy(); // команда flatpicker-а
+      this.#dateFromPicker = null;
     }
 
-    this._dateFromPicker = flatpickr(
+    this.#dateFromPicker = flatpickr(
       this.element.querySelector('.event__field-group--time input:nth-child(2)'),
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-
-        maxDate: `${this._data.dateTo.format('DD')}/${this._data.dateTo.format('MM')}/
-        ${this._data.dateTo.format('YY')} ${this._data.dateTo.format('HH')}:
-        ${this._data.dateTo.format('mm')}`,
-
-        defaultDate: `${this._data.dateFrom.format('DD')}/${this._data.dateFrom.format('MM')}/
-        ${this._data.dateFrom.format('YY')} ${this._data.dateFrom.format('HH')}:
-        ${this._data.dateFrom.format('mm')}`,
-
-        onClose: this._dateFromChangeHandler, //колбэк на изменение выбранной даты
+        maxDate: `${this._data.dateTo.format('DD')}/${this._data.dateTo.format('MM')}/${this._data.dateTo.format('YY')} ${this._data.dateTo.format('HH')}:${this._data.dateTo.format('mm')}`,
+        defaultDate: `${this._data.dateFrom.format('DD')}/${this._data.dateFrom.format('MM')}/${this._data.dateFrom.format('YY')} ${this._data.dateFrom.format('HH')}:${this._data.dateFrom.format('mm')}`,
+        onClose: this.#dateFromChangeHandler, //колбэк на изменение выбранной даты
       },
     );
   }
 
-  _dateFromChangeHandler([userDate]) {
+  #dateFromChangeHandler = ([userDate]) => {
     this.updateData({
       dateFrom: dayjs(userDate),
     });
   }
 
-  _setDateToPicker() { // устанавливает окно ввода даты окончания
-    if (this._dateToPicker) { // удаляет дом-мусор от ранее созданных окон flatpicker-а
-      this._dateToPicker.destroy(); // команда flatpicker-а
-      this._dateToPicker = null;
+  #setDateToPicker = () => { // устанавливает окно ввода даты окончания
+    if (this.#dateToPicker) { // удаляет дом-мусор от ранее созданных окон flatpicker-а
+      this.#dateToPicker.destroy(); // команда flatpicker-а
+      this.#dateToPicker = null;
     }
 
-    this._dateToPicker = flatpickr(
+    this.#dateToPicker = flatpickr(
       this.element.querySelector('.event__field-group--time input:nth-child(4)'),
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-
-        minDate: `${this._data.dateFrom.format('DD')}/${this._data.dateFrom.format('MM')}/
-        ${this._data.dateFrom.format('YY')} ${this._data.dateFrom.format('HH')}:
-        ${this._data.dateFrom.format('mm')}`,
-
-        defaultDate: `${this._data.dateTo.format('DD')}/${this._data.dateTo.format('MM')}/
-        ${this._data.dateTo.format('YY')} ${this._data.dateTo.format('HH')}:
-        ${this._data.dateTo.format('mm')}`,
-
-        onClose: this._dateToChangeHandler, //колбэк на изменение выбранной даты
+        minDate: `${this._data.dateFrom.format('DD')}/${this._data.dateFrom.format('MM')}/${this._data.dateFrom.format('YY')} ${this._data.dateFrom.format('HH')}:${this._data.dateFrom.format('mm')}`,
+        defaultDate: `${this._data.dateTo.format('DD')}/${this._data.dateTo.format('MM')}/${this._data.dateTo.format('YY')} ${this._data.dateTo.format('HH')}:${this._data.dateTo.format('mm')}`,
+        onClose: this.#dateToChangeHandler, //колбэк на изменение выбранной даты
       },
     );
   }
 
-  _dateToChangeHandler([userDate]) {
+  #dateToChangeHandler = ([userDate]) => {
     this.updateData({
       dateTo: dayjs(userDate),
     });

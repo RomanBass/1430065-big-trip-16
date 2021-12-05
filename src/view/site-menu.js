@@ -11,15 +11,13 @@ const createSiteMenuTemplate = () => (
 export default class SiteMenu extends AbstractView {
   constructor() {
     super();
-
-    this._menuClickHandler = this._menuClickHandler.bind(this);
   }
 
   get template() {
     return createSiteMenuTemplate();
   }
 
-  _menuClickHandler(evt) {
+  #menuClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.menuClick(evt.target.dataset.optionName);
 
@@ -35,7 +33,7 @@ export default class SiteMenu extends AbstractView {
 
   setMenuClickHandler(callback) {
     this._callback.menuClick = callback;
-    this.element.addEventListener('click', this._menuClickHandler);
+    this.element.addEventListener('click', this.#menuClickHandler);
   }
 
 }

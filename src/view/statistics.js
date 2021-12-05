@@ -226,6 +226,10 @@ const createStatisticsTemplate = () => (
 );
 
 export default class Statistics extends SmartView {
+  #moneyChart = null;
+  #typeChart = null;
+  #durationChart = null;
+
   constructor(moneyData, typeData, durationData) {
     super();
 
@@ -235,11 +239,7 @@ export default class Statistics extends SmartView {
       tripDurationData: durationData,
     };
 
-    this._moneyChart = null;
-    this._typeChart = null;
-    this._durationChart = null;
-
-    this._setCharts();
+    this.#setCharts();
   }
 
   get template() {
@@ -250,18 +250,18 @@ export default class Statistics extends SmartView {
     );
   }
 
-  _setCharts() {
+  #setCharts = () => {
 
-    if (this._moneyChart) {
-      this._moneyChart = null;
+    if (this.#moneyChart) {
+      this.#moneyChart = null;
     }
 
-    if (this._typeChart) {
-      this._typeChart = null;
+    if (this.#typeChart) {
+      this.#typeChart = null;
     }
 
-    if (this._durationChart) {
-      this._durationChart = null;
+    if (this.#durationChart) {
+      this.#durationChart = null;
     }
 
     const moneyCtx = this.element.querySelector('#money');
@@ -273,13 +273,13 @@ export default class Statistics extends SmartView {
     typeCtx.height = BAR_HEIGHT * Object.values(this._data.tripTypeData).length;
     durationCtx.height = BAR_HEIGHT * Object.values(this._data.tripDurationData).length;
 
-    this._moneyChart = renderMoneyChart(moneyCtx, this._data.tripMoneyData);
-    this._typeChart = renderTypeChart(typeCtx, this._data.tripTypeData);
-    this._durationChart = renderDurationChart(durationCtx, this._data.tripDurationData);
+    this.#moneyChart = renderMoneyChart(moneyCtx, this._data.tripMoneyData);
+    this.#typeChart = renderTypeChart(typeCtx, this._data.tripTypeData);
+    this.#durationChart = renderDurationChart(durationCtx, this._data.tripDurationData);
   }
 
   restoreHandlers() {
-    this._setCharts();
+    this.#setCharts();
   }
 
 }

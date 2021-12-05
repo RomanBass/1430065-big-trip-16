@@ -4,14 +4,12 @@ const SHAKE_ANIMATION_TIMEOUT = 600;
 
 export default class Abstract {
   #element = null;
-  #callback = null;
+  _callback = {};
 
   constructor() {
     if (new.target === Abstract) {
       throw new Error('Can\'t instantiate Abstract, only concrete one.');
     }
-
-    this.#callback = {};
   }
 
   get template() {

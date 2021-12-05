@@ -65,36 +65,36 @@ const createPointTemplate = (point, possibleOffers) => {
 };
 
 export default class Point extends AbstractView {
+  #point = null;
+  #possibleOffers = null;
+
   constructor(point, possibleOffers) {
     super();
-    this._point = point;
-    this._possibleOffers = possibleOffers;
-
-    this._pointRollupButtonClickHandler = this._pointRollupButtonClickHandler.bind(this);
-    this._favoriteButtonClickHandler = this._favoriteButtonClickHandler.bind(this);
+    this.#point = point;
+    this.#possibleOffers = possibleOffers;
   }
 
   get template() {
-    return createPointTemplate(this._point, this._possibleOffers);
+    return createPointTemplate(this.#point, this.#possibleOffers);
   }
 
-  _pointRollupButtonClickHandler(evt) {
+  #pointRollupButtonClickHandler = (evt) => {
     evt.preventDefault();
-    this.#callback.pointRollupButtonClick();
+    this._callback.pointRollupButtonClick();
   }
 
-  setPointRollupButtonClickHandler(callback) {
-    this.#callback.pointRollupButtonClick = callback;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this._pointRollupButtonClickHandler);
+  setPointRollupButtonClickHandler = (callback) => {
+    this._callback.pointRollupButtonClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#pointRollupButtonClickHandler);
   }
 
-  _favoriteButtonClickHandler(evt) { // обработчик клика по звёздочке
+  #favoriteButtonClickHandler = (evt) => { // обработчик клика по звёздочке
     evt.preventDefault();
-    this.#callback.favoriteButtonClick();
+    this._callback.favoriteButtonClick();
   }
 
-  setFavoriteButtonClickHandler(callback) { // установщик обработчика клика по стрелке
-    this.#callback.favoriteButtonClick = callback;
-    this.element.querySelector('.event__favorite-btn').addEventListener('click', this._favoriteButtonClickHandler);
+  setFavoriteButtonClickHandler = (callback) => { // установщик обработчика клика по стрелке
+    this._callback.favoriteButtonClick = callback;
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteButtonClickHandler);
   }
 }

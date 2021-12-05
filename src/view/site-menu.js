@@ -11,17 +11,15 @@ const createSiteMenuTemplate = () => (
 export default class SiteMenu extends AbstractView {
   constructor() {
     super();
-
-    this._menuClickHandler = this._menuClickHandler.bind(this);
   }
 
   get template() {
     return createSiteMenuTemplate();
   }
 
-  _menuClickHandler(evt) {
+  #menuClickHandler = (evt) => {
     evt.preventDefault();
-    this.#callback.menuClick(evt.target.dataset.optionName);
+    this._callback.menuClick(evt.target.dataset.optionName);
 
     if (!evt.target.classList.contains('trip-tabs__btn--active')) {
       const prevActiveMenuOption = this.element.querySelector('.trip-tabs__btn--active');
@@ -34,8 +32,8 @@ export default class SiteMenu extends AbstractView {
   }
 
   setMenuClickHandler(callback) {
-    this.#callback.menuClick = callback;
-    this.element.addEventListener('click', this._menuClickHandler);
+    this._callback.menuClick = callback;
+    this.element.addEventListener('click', this.#menuClickHandler);
   }
 
 }

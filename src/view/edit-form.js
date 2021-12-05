@@ -422,15 +422,8 @@ export default class EditForm extends SmartView {
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-
-        maxDate: `${this._data.dateTo.format('DD')}/${this._data.dateTo.format('MM')}/
-        ${this._data.dateTo.format('YY')} ${this._data.dateTo.format('HH')}:
-        ${this._data.dateTo.format('mm')}`,
-
-        defaultDate: `${this._data.dateFrom.format('DD')}/${this._data.dateFrom.format('MM')}/
-        ${this._data.dateFrom.format('YY')} ${this._data.dateFrom.format('HH')}:
-        ${this._data.dateFrom.format('mm')}`,
-
+        maxDate: `${this._data.dateTo.format('DD')}/${this._data.dateTo.format('MM')}/${this._data.dateTo.format('YY')} ${this._data.dateTo.format('HH')}:${this._data.dateTo.format('mm')}`,
+        defaultDate: `${this._data.dateFrom.format('DD')}/${this._data.dateFrom.format('MM')}/${this._data.dateFrom.format('YY')} ${this._data.dateFrom.format('HH')}:${this._data.dateFrom.format('mm')}`,
         onClose: this.#dateFromChangeHandler, //колбэк на изменение выбранной даты
       },
     );
@@ -453,15 +446,8 @@ export default class EditForm extends SmartView {
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-
-        minDate: `${this._data.dateFrom.format('DD')}/${this._data.dateFrom.format('MM')}/
-        ${this._data.dateFrom.format('YY')} ${this._data.dateFrom.format('HH')}:
-        ${this._data.dateFrom.format('mm')}`,
-
-        defaultDate: `${this._data.dateTo.format('DD')}/${this._data.dateTo.format('MM')}/
-        ${this._data.dateTo.format('YY')} ${this._data.dateTo.format('HH')}:
-        ${this._data.dateTo.format('mm')}`,
-
+        minDate: `${this._data.dateFrom.format('DD')}/${this._data.dateFrom.format('MM')}/${this._data.dateFrom.format('YY')} ${this._data.dateFrom.format('HH')}:${this._data.dateFrom.format('mm')}`,
+        defaultDate: `${this._data.dateTo.format('DD')}/${this._data.dateTo.format('MM')}/${this._data.dateTo.format('YY')} ${this._data.dateTo.format('HH')}:${this._data.dateTo.format('mm')}`,
         onClose: this.#dateToChangeHandler, //колбэк на изменение выбранной даты
       },
     );

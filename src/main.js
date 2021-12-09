@@ -16,6 +16,7 @@ import { getDestinationsFromPoints } from './utils/route.js';
 
 const AUTHORIZATION = 'Basic df9df9df8sd8fg8u';
 const END_POINT = 'https://15.ecmascript.pages.academy/big-trip';
+const PROMISE_STATUS_FULFILLED = 'fulfilled';
 
 const siteHeaderElement = document.querySelector('.page-header'); // крупный блок
 const menuElement = siteHeaderElement.querySelector('.trip-controls__navigation'); // контейнеры...
@@ -105,22 +106,22 @@ Promise
   .allSettled([api.getOffers(), api.getDestinations(), api.getPoints()])
   .then((results) => {
 
-    if (results[ARRAY_INDEX_ZERO].status === 'fulfilled') {
+    if (results[ARRAY_INDEX_ZERO].status === PROMISE_STATUS_FULFILLED) {
       pointsModel.setOffers(results[ARRAY_INDEX_ZERO].value);
     } else {
       pointsModel.setOffers(BlankPossibleOffers);
     }
 
-    if (results[ARRAY_INDEX_ONE].status === 'fulfilled') {
+    if (results[ARRAY_INDEX_ONE].status === PROMISE_STATUS_FULFILLED) {
       pointsModel.setDestinations(results[ARRAY_INDEX_ONE].value);
-    } else if (results[ARRAY_INDEX_TWO].status === 'fulfilled') {
+    } else if (results[ARRAY_INDEX_TWO].status === PROMISE_STATUS_FULFILLED) {
       pointsModel.setDestinations(getDestinationsFromPoints(results[ARRAY_INDEX_TWO].value));
     } else {
       pointsModel.setDestinations([]);
     } /* Если не загружены назначения, то они извлекаются из точек,
         если не загружены точки, то назначениям присваивается []  */
 
-    if (results[ARRAY_INDEX_TWO].status === 'fulfilled') {
+    if (results[ARRAY_INDEX_TWO].status === PROMISE_STATUS_FULFILLED) {
       pointsModel.setPoints(UpdateType.INIT, results[ARRAY_INDEX_TWO].value);
     } else {
       pointsModel.setPoints(UpdateType.INIT, []);

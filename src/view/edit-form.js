@@ -225,17 +225,6 @@ export default class EditForm extends SmartView {
     this.#possibleOffers = possibleOffers;
     this.#possibleDestinations = possibleDestinations;
 
-    //this.#editFormRollupButtonClickHandler = this.#editFormRollupButtonClickHandler.bind(this);
-    //this._editFormSubmitButtonClickHandler = this._editFormSubmitButtonClickHandler.bind(this);
-    //this._typeFieldsetChangeHandler = this._typeFieldsetChangeHandler.bind(this);
-    //this._destinationInputChangeHandler = this._destinationInputChangeHandler.bind(this);
-    //this._dateFromChangeHandler = this._dateFromChangeHandler.bind(this);
-    //this._dateToChangeHandler = this._dateToChangeHandler.bind(this);
-    //this._basePriceInputChangeHandler = this._basePriceInputChangeHandler.bind(this);
-    //this._offersChangeHandler = this._offersChangeHandler.bind(this);
-    //this._deletePointClickHandler = this._deletePointClickHandler.bind(this);
-    //this._addFormCancelHandler = this._addFormCancelHandler.bind(this);
-
     this.#setInnerHandlers();
     this.#setDateFromPicker();
     this.#setDateToPicker();

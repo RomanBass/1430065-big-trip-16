@@ -1,56 +1,54 @@
 import FilterView from '../view/filter.js';
 import { render, RenderPosition, replace, remove } from '../utils/render.js';
-import { FilterType, UpdateType } from '../utils/const.js';
+import { UpdateType } from '../utils/const.js';
 import dayjs from 'dayjs';
 
 export default class Filter {
+  #filterContainer = null;
+  #filterModel = null;
+  #pointsModel = null;
+  #filterComponent = null;
+
   constructor (filterContainer, filterModel, pointsModel) {
-    this._filterContainer = filterContainer;
-    this._filterModel = filterModel;
-    this._pointsModel = pointsModel;
-    this._currentFilterType = FilterType.EVERYTHING;
+    this.#filterContainer = filterContainer;
+    this.#filterModel = filterModel;
+    this.#pointsModel = pointsModel;
 
-    this._filterComponent = null;
-
-    this._handleModelEvent = this._handleModelEvent.bind(this);
-    this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
-
-    this._filterModel.addObserver(this._handleModelEvent);
-    this._pointsModel.addObserver(this._handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
-  init() {
-    const prevFilterComponent = this._filterComponent;
+  init = () => {
+    const prevFilterComponent = this.#filterComponent;
 
     const AreFiltersAvailable = { // зависит от наличия точек при данном фильтре, используется для блокировки фильтров
-      EVERYTHING: (this._pointsModel.getPoints()).length > null,
-      FUTURE: !!this._pointsModel.getPoints().find((point) => point.dateTo > dayjs()),
-      PAST: !!this._pointsModel.getPoints().find((point) => point.dateFrom < dayjs()),
+      EVERYTHING: (this.#pointsModel.getPoints()).length > null,
+      FUTURE: !!this.#pointsModel.getPoints().find((point) => point.dateTo > dayjs()),
+      PAST: !!this.#pointsModel.getPoints().find((point) => point.dateFrom < dayjs()),
     };
 
-    this._filterComponent = new FilterView(this._filterModel.getFilter(), AreFiltersAvailable);
-    this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
+    this.#filterComponent = new FilterView(this.#filterModel.getFilter(), AreFiltersAvailable);
+    this.#filterComponent.setFilterTypeChangeHandler(this.#handleFilterTypeChange);
 
     if (prevFilterComponent === null) {
-      render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
+      render(this.#filterContainer, this.#filterComponent, RenderPosition.BEFOREEND);
       return;
     }
 
-    replace(this._filterComponent, prevFilterComponent);
+    replace(this.#filterComponent, prevFilterComponent);
     remove(prevFilterComponent);
   }
 
-  _handleModelEvent() {
+  #handleModelEvent = () => {
     this.init();
   }
 
-  _handleFilterTypeChange(filterType) {
+  #handleFilterTypeChange = (filterType) => {
 
-    if (this._filterModel.getFilter() === filterType) { // производит отбой, если клик происходит по текущему фильтру
+    if (this.#filterModel.getFilter() === filterType) { // производит отбой, если клик происходит по текущему фильтру
       return;
     }
 
-    this._filterModel.setFilter(UpdateType.MAJOR, filterType);  // производит изменение модели фильтров
-    this._currentFilterType = filterType;
+    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);  // производит изменение модели фильтров
   }
 }

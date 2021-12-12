@@ -61,7 +61,7 @@ export default class Point {
     remove(prevEditFormComponent);
   }
 
-  destroy() {
+  destroy = () => {
     remove(this.#pointComponent);
     remove(this.#editFormComponent);
   }
@@ -79,7 +79,7 @@ export default class Point {
     this.#mode = Mode.DEFAULT;
   }
 
-  resetView() {
+  resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
       this.#replaceEditFormToPoint();
     }
@@ -129,14 +129,14 @@ export default class Point {
     );
   }
 
-  abortingFormSubmit() {
+  abortingFormSubmit = () => {
     this.#editFormComponent.showSave();
     this.#editFormComponent.showEnabled();
     this.#editFormComponent.shake();
     this.#pointComponent.shake();
   }
 
-  abortingPointDelete() {
+  abortingPointDelete = () => {
     this.#editFormComponent.showDelete();
     this.#editFormComponent.showEnabled();
     this.#editFormComponent.shake();

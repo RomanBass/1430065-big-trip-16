@@ -27,7 +27,7 @@ export default class PointNew {
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  destroy() {
+  destroy = () => {
     remove(this.#editFormComponent);
     this.#editFormComponent = null;
     document.removeEventListener('keydown', this.#escKeyDownHandler);
@@ -52,7 +52,7 @@ export default class PointNew {
     }
   }
 
-  abortingPointAdding() {
+  abortingPointAdding = () => {
     this.#editFormComponent.showSave();
     this.#editFormComponent.showEnabled();
     this.#editFormComponent.shake();

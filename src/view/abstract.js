@@ -24,11 +24,11 @@ export default class Abstract {
     return this.#element;
   }
 
-  removeElement() {
+  removeElement = () => {
     this.#element = null;
   }
 
-  shake() {
+  shake = () => {
     this.element.classList.add('shake');
     setTimeout(() => {
       this.element.classList.remove('shake');

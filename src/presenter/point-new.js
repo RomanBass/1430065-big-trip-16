@@ -3,60 +3,59 @@ import { render, RenderPosition, remove } from '../utils/render';
 import { UserAction, UpdateType } from '../utils/const.js';
 
 export default class PointNew {
-  constructor(eventListContainer, changeData) {
-    this._eventListContainer = eventListContainer;
-    this._editFormComponent = null;
-    this._changeData = changeData;
+  #eventListContainer = null;
+  #editFormComponent = null;
+  #changeData = null;
 
-    this._handleEditFormSubmit = this._handleEditFormSubmit.bind(this);
-    this._handleAddFormCancel = this._handleAddFormCancel.bind(this);
+  constructor(eventListContainer, changeData) {
+    this.#eventListContainer = eventListContainer;
+    this.#changeData = changeData;
   }
 
-  init(point, offers, destinations) {
+  init = (point, offers, destinations) => {
 
-    if (this._editFormComponent !== null) { // чтобы не отрисовывалось две формы добавления
+    if (this.#editFormComponent !== null) { // чтобы не отрисовывалось две формы добавления
       return;
     }
 
-    this._editFormComponent = new EditFormView(point, offers, destinations);
+    this.#editFormComponent = new EditFormView(point, offers, destinations);
 
-    this._editFormComponent.setEditFormSubmitButtonClickHandler(this._handleEditFormSubmit);
-    this._editFormComponent.setAddFormCancelHandler(this._handleAddFormCancel);
-    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this.#editFormComponent.setEditFormSubmitButtonClickHandler(this.#handleEditFormSubmit);
+    this.#editFormComponent.setAddFormCancelHandler(this.#handleAddFormCancel);
 
-    render(this._eventListContainer, this._editFormComponent, RenderPosition.AFTERBEGIN);
-    document.addEventListener('keydown', this._escKeyDownHandler);
+    render(this.#eventListContainer, this.#editFormComponent, RenderPosition.AFTERBEGIN);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  destroy() {
-    remove(this._editFormComponent);
-    this._editFormComponent = null;
-    document.removeEventListener('keydown', this._escKeyDownHandler);
+  destroy = () => {
+    remove(this.#editFormComponent);
+    this.#editFormComponent = null;
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  _handleEditFormSubmit(point) {
-    this._changeData(
+  #handleEditFormSubmit = (point) => {
+    this.#changeData(
       UserAction.ADD_POINT,
       UpdateType.MAJOR,
       point,
     );
   }
 
-  _handleAddFormCancel() { // обработчик на кнопку Cancel для удаления формы добавления
+  #handleAddFormCancel = () => { // обработчик на кнопку Cancel для удаления формы добавления
     this.destroy();
   }
 
-  _escKeyDownHandler(evt) {
+  #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       this.destroy();
     }
   }
 
-  abortingPointAdding() {
-    this._editFormComponent.showSave();
-    this._editFormComponent.showEnabled();
-    this._editFormComponent.shake();
+  abortingPointAdding = () => {
+    this.#editFormComponent.showSave();
+    this.#editFormComponent.showEnabled();
+    this.#editFormComponent.shake();
   }
 
 }

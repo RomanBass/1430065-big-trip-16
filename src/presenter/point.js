@@ -10,54 +10,51 @@ const Mode = { // определяет режим отображения - то�
 };
 
 export default class Point {
-  constructor(eventListContainer, changeData, changeMode) {
-    this._eventListContainer = eventListContainer;
-    this._pointComponent = null;
-    this._editFormComponent = null;
-    this._changeData = changeData;
-    this._changeMode = changeMode;
-    this._mode = Mode.DEFAULT;
+  #eventListContainer = null;
+  #pointComponent = null;
+  #editFormComponent = null;
+  #changeData = null;
+  #changeMode = null;
+  #mode = null;
+  #point = null;
 
-    this._handlePointToEditFormClick = this._handlePointToEditFormClick.bind(this);
-    this._handleEditFormToPointClick = this._handleEditFormToPointClick.bind(this);
-    this._handleFavoriteButtonClick = this._handleFavoriteButtonClick.bind(this);
-    this._handleEditFormSubmit = this._handleEditFormSubmit.bind(this);
-    this._handleDeletePoint = this._handleDeletePoint.bind(this);
-    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+  constructor(eventListContainer, changeData, changeMode) {
+    this.#eventListContainer = eventListContainer;
+    this.#changeData = changeData;
+    this.#changeMode = changeMode;
+    this.#mode = Mode.DEFAULT;
   }
 
-  init(point, offers, destinations) {
-    this._point = point;
+  init = (point, offers, destinations) => {
+    this.#point = point;
 
-    const prevPointComponent = this._pointComponent;
-    const prevEditFormComponent = this._editFormComponent;
+    const prevPointComponent = this.#pointComponent;
+    const prevEditFormComponent = this.#editFormComponent;
 
-    this._pointComponent = new PointView(point, offers);
-    this._editFormComponent = new EditFormView(point, offers, destinations);
+    this.#pointComponent = new PointView(point, offers);
+    this.#editFormComponent = new EditFormView(point, offers, destinations);
 
-    this._pointComponent.setPointRollupButtonClickHandler(this._handlePointToEditFormClick);
-    this._editFormComponent.setEditFormRollupButtonClickHandler(this._handleEditFormToPointClick);
-    this._editFormComponent.setEditFormSubmitButtonClickHandler(this._handleEditFormSubmit);
-    this._editFormComponent.setDeletePointClickHandler(this._handleDeletePoint);
-    this._pointComponent.setFavoriteButtonClickHandler(this._handleFavoriteButtonClick);
+    this.#pointComponent.setPointRollupButtonClickHandler(this.#handlePointToEditFormClick);
+    this.#editFormComponent.setEditFormRollupButtonClickHandler(this.#handleEditFormToPointClick);
+    this.#editFormComponent.setEditFormSubmitButtonClickHandler(this.#handleEditFormSubmit);
+    this.#editFormComponent.setDeletePointClickHandler(this.#handleDeletePoint);
+    this.#pointComponent.setFavoriteButtonClickHandler(this.#handleFavoriteButtonClick);
 
-    //this._editFormComponent.showSave();
-
-    if (this._point.id === BlankPoint.id) { // чтобы не отрисовывалась точка по данным формы добавления
+    if (this.#point.id === BlankPoint.id) { // чтобы не отрисовывалась точка по данным формы добавления
       return;
     }
 
     if (prevPointComponent === null || prevEditFormComponent === null) {
-      render(this._eventListContainer, this._pointComponent, RenderPosition.BEFOREEND);
+      render(this.#eventListContainer, this.#pointComponent, RenderPosition.BEFOREEND);
       return;
     }
 
-    if (this._mode === Mode.DEFAULT) {
-      replace(this._pointComponent, prevPointComponent);
+    if (this.#mode === Mode.DEFAULT) {
+      replace(this.#pointComponent, prevPointComponent);
     }
 
-    if (this._mode === Mode.EDITING) {
-      replace(this._editFormComponent, prevEditFormComponent);
+    if (this.#mode === Mode.EDITING) {
+      replace(this.#editFormComponent, prevEditFormComponent);
     }
 
     remove(prevPointComponent);
@@ -65,67 +62,67 @@ export default class Point {
   }
 
   destroy() {
-    remove(this._pointComponent);
-    remove(this._editFormComponent);
+    remove(this.#pointComponent);
+    remove(this.#editFormComponent);
   }
 
-  _replacePointToForm() {
-    replace(this._editFormComponent, this._pointComponent.element);
-    document.addEventListener('keydown', this._escKeyDownHandler);
-    this._changeMode();
-    this._mode = Mode.EDITING;
+  #replacePointToForm = () => {
+    replace(this.#editFormComponent, this.#pointComponent.element);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+    this.#changeMode();
+    this.#mode = Mode.EDITING;
   }
 
-  _replaceEditFormToPoint() {
-    replace(this._pointComponent, this._editFormComponent);
-    document.removeEventListener('keydown', this._escKeyDownHandler);
-    this._mode = Mode.DEFAULT;
+  #replaceEditFormToPoint = () => {
+    replace(this.#pointComponent, this.#editFormComponent);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = Mode.DEFAULT;
   }
 
   resetView() {
-    if (this._mode !== Mode.DEFAULT) {
-      this._replaceEditFormToPoint();
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#replaceEditFormToPoint();
     }
   }
 
-  _escKeyDownHandler(evt) {
+  #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      this._replaceEditFormToPoint();
-      document.removeEventListener('keydown', this._escKeyDownHandler);
+      this.#replaceEditFormToPoint();
+      document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   }
 
-  _handlePointToEditFormClick() { // клик по стрелке закрывает точку маршрута и открывает форму редактирования
-    this._replacePointToForm();
+  #handlePointToEditFormClick = () => { // клик по стрелке закрывает точку маршрута и открывает форму редактирования
+    this.#replacePointToForm();
   }
 
-  _handleEditFormToPointClick() { // клик по стрелке закрывает форму редактирования и открывает точку маршрута
-    this._replaceEditFormToPoint();
+  #handleEditFormToPointClick = () => { // клик по стрелке закрывает форму редактирования и открывает точку маршрута
+    this.#replaceEditFormToPoint();
   }
 
-  _handleFavoriteButtonClick() {
-    this._changeData(
+  #handleFavoriteButtonClick = () => {
+    this.#changeData(
       UserAction.UPDATE_POINT,
       UpdateType.PATCH,
       Object.assign(
         {},
-        this._point,
-        {isFavorite: !this._point.isFavorite},
+        this.#point,
+        {isFavorite: !this.#point.isFavorite},
       ),
     );
   }
 
-  _handleEditFormSubmit(point) {
-    this._changeData(
+  #handleEditFormSubmit = (point) => {
+    this.#changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       point,
     );
   }
 
-  _handleDeletePoint(point) {
-    this._changeData(
+  #handleDeletePoint = (point) => {
+    this.#changeData(
       UserAction.DELETE_POINT,
       UpdateType.MAJOR,
       point,
@@ -133,15 +130,15 @@ export default class Point {
   }
 
   abortingFormSubmit() {
-    this._editFormComponent.showSave();
-    this._editFormComponent.showEnabled();
-    this._editFormComponent.shake();
-    this._pointComponent.shake();
+    this.#editFormComponent.showSave();
+    this.#editFormComponent.showEnabled();
+    this.#editFormComponent.shake();
+    this.#pointComponent.shake();
   }
 
   abortingPointDelete() {
-    this._editFormComponent.showDelete();
-    this._editFormComponent.showEnabled();
-    this._editFormComponent.shake();
+    this.#editFormComponent.showDelete();
+    this.#editFormComponent.showEnabled();
+    this.#editFormComponent.shake();
   }
 }

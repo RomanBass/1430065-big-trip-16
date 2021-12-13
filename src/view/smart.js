@@ -33,7 +33,7 @@ export default class Smart extends Abstract {
     this.restoreHandlers();
   }
 
-  restoreHandlers() {
+  restoreHandlers = () => {
     throw new Error('Abstract method not implemented: resetHandlers');
   }
 }

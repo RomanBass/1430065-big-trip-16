@@ -23,6 +23,6 @@ export default class InfoAndPrice extends SmartView {
     return createInfoAndPriceTemplate(this._data.tripPrice, this._data.tripDate, this._data.tripName);
   }
 
-  restoreHandlers() {
+  restoreHandlers = () => {
   }
 }

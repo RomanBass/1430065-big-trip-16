@@ -278,7 +278,7 @@ export default class Statistics extends SmartView {
     this.#durationChart = renderDurationChart(durationCtx, this._data.tripDurationData);
   }
 
-  restoreHandlers() {
+  restoreHandlers = () => {
     this.#setCharts();
   }
 

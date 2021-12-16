@@ -266,7 +266,7 @@ export default class EditForm extends SmartView {
     this.element.querySelector('.event__save-btn').textContent = 'Saving...';
   }
 
-  showSave() {
+  showSave = () => {
     this.element.querySelector('.event__save-btn').textContent = 'Save';
   }
 
@@ -277,7 +277,7 @@ export default class EditForm extends SmartView {
     this._callback.deletePointClickHandler(this._data);
   }
 
-  setDeletePointClickHandler(callback) {
+  setDeletePointClickHandler = (callback) => {
     this._callback.deletePointClickHandler = callback;
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#deletePointClickHandler);
@@ -287,7 +287,7 @@ export default class EditForm extends SmartView {
     this.element.querySelector('.event__reset-btn').textContent = 'Deleting...';
   }
 
-  showDelete() {
+  showDelete = () => {
     this.element.querySelector('.event__reset-btn').textContent = 'Delete';
   }
 
@@ -299,7 +299,7 @@ export default class EditForm extends SmartView {
       });
   }
 
-  showEnabled() {
+  showEnabled = () => {
     this.element.querySelectorAll(
       'fieldset, input:not(.visually-hidden), button, .event__offer-checkbox')
       .forEach((element) => {
@@ -313,7 +313,7 @@ export default class EditForm extends SmartView {
     this._callback.addFormCancelHandler();
   }
 
-  setAddFormCancelHandler(callback) {
+  setAddFormCancelHandler = (callback) => {
     this._callback.addFormCancelHandler = callback;
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#addFormCancelHandler);
@@ -377,7 +377,7 @@ export default class EditForm extends SmartView {
     this.updateData({offers: this._data.offers}); //обновляются данные точки в части опций
   }
 
-  restoreHandlers() { //восстанавливает все необходимые обработчики на новую форму редактирования
+  restoreHandlers = () => { //восстанавливает все необходимые обработчики на новую форму редактирования
     this.#setInnerHandlers();
     this.#setDateFromPicker();
     this.#setDateToPicker();

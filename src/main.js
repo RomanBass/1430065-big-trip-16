@@ -127,6 +127,6 @@ Promise
       pointsModel.setPoints(UpdateType.INIT, []);
     }
 
-    newPointAddButton.disabled = false; //включает кнопку после загрузки данных
+    newPointAddButton.disabled = false; //включает кнопку после загрузки данных//
 
   });

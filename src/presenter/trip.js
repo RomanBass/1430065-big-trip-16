@@ -41,7 +41,7 @@ export default class Trip {
     if (this.#isLoading) {
       this.#renderLoading();
     } else {
-      if (!this.#getPoints().length) { // если точек нет, то отображается заглушка
+      if (!this.points.length) { // если точек нет, то отображается заглушка
         this.#renderNoPoint();
       } else {
         this.#renderSort();
@@ -87,7 +87,7 @@ export default class Trip {
     this.#pointPresenters = {};
   }
 
-  #getPoints = () => {
+  get points () {
     this.#filterType = this.#filterModel.getFilter();
     const points = this.#pointsModel.points;
     const filteredPoints = filter[this.#filterType](points);
@@ -155,7 +155,7 @@ export default class Trip {
         remove(this.#sortingComponent);
         remove(this.#noPointComponent); // чтобы удалялаяь надпись отсутствия точек при фильтрации в случае массива из одной точки
 
-        if (!this.#getPoints().length) {
+        if (!this.points.length) {
           this.#renderNoPoint();
         } else {
           this.#currentSortType = SortType.BY_DATE_FROM;
@@ -168,7 +168,7 @@ export default class Trip {
         this.#isLoading = false;
         remove(this.#loadingComponent);
 
-        if (!this.#getPoints().length) {
+        if (!this.points.length) {
           this.#renderNoPoint();
         } else {
           this.#currentSortType = SortType.BY_DATE_FROM;
@@ -192,7 +192,7 @@ export default class Trip {
       remove(this.#noPointComponent);
     }
 
-    if (!this.#getPoints().length) {
+    if (!this.points.length) {
       this.#noPointComponent = new NoPointView(this.#filterType);
       render(this.#tripContainer, this.#noPointComponent, RenderPosition.BEFOREEND);
     }
@@ -219,7 +219,7 @@ export default class Trip {
   }
 
   #renderPoints = () => {
-    this.#getPoints().slice().forEach((point) => this.#renderPoint(point));
+    this.points.slice().forEach((point) => this.#renderPoint(point));
   }
 
   #renderEventsList = () => {

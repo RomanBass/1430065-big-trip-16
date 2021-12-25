@@ -93,13 +93,13 @@ export default class Trip {
     const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
-      case SortType.BY_DATE_FROM:
-        return filteredPoints.sort(sortByDateFrom);
       case SortType.BY_PRICE:
         return filteredPoints.sort(sortByPrice);
       case SortType.BY_DURATION:
         return filteredPoints.sort(sortByDuration);
     }
+
+    return filteredPoints.sort(sortByDateFrom);
   }
 
   #handleModeChange = () => {

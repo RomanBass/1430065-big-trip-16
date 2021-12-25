@@ -2,73 +2,70 @@ import Observer from '../utils/observer.js';
 import dayjs from 'dayjs';
 
 export default class Points extends Observer {
-  constructor() {
-    super();
-    this._points = [];
-    this._offers = {};
-    this._destinations = [];
-  }
+  #points = [];
+  #offers = {};
+  #destinations = [];
 
-  setPoints(updateType, points) {
-    this._points = points.slice();
+  set points([updateType, points]) {
+    this.#points = [...points];
     this._notify(updateType);
   }
 
-  getPoints() {
-    return this._points;
+  get points() {
+    return this.#points;
   }
 
-  setOffers(offers) {
-    this._offers = offers;
+  set offers(offers) {
+    this.#offers = offers;
   }
 
-  getOffers() {
-    return this._offers;
+  get offers() {
+    return this.#offers;
   }
 
-  setDestinations(destinations) {
-    this._destinations = destinations;
+  set destinations(destinations) {
+    this.#destinations = destinations;
   }
 
-  getDestinations() {
-    return this._destinations;
+  get destinations() {
+    return this.#destinations;
   }
 
-  updatePoint(updateType, update) {
-    const index = this._points.findIndex((point) => point.id === update.id);
+  updatePoint (updateType, update) {
+    const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting point');
     }
 
-    this._points = [
-      ...this._points.slice(0, index),
+    this.#points = [
+      ...this.#points.slice(0, index),
       update,
-      ...this._points.slice(index + 1),
+      ...this.#points.slice(index + 1),
     ];
 
     this._notify(updateType, update);
   }
 
   addPoint(updateType, update) {
-    this._points = [
+    this.#points = [
       update,
-      ...this._points,
+      ...this.#points,
     ];
 
     this._notify(updateType, update);
   }
 
   deletePoint(updateType, update) {
-    const index = this._points.findIndex((point) => point.id === update.id);
+    const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t delete unexisting point');
     }
 
-    this._points = [
-      ...this._points.slice(0, index),
-      ...this._points.slice(index + 1),
+    this.#points = [
+      ...this.#points.slice(0, index),
+      ...this.#points.slice(index + 1),
     ];
 
     this._notify(updateType);

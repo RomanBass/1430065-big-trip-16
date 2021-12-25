@@ -62,8 +62,8 @@ export default class Trip {
       this.#renderEventsList();
     }
 
-    this.#pointNewPresenter.init(BlankPoint, this.#pointsModel.getOffers(),
-      this.#pointsModel.getDestinations());
+    this.#pointNewPresenter.init(BlankPoint, this.#pointsModel.offers,
+      this.#pointsModel.destinations);
 
     remove(this.#noPointComponent);
   }
@@ -89,7 +89,7 @@ export default class Trip {
 
   #getPoints = () => {
     this.#filterType = this.#filterModel.getFilter();
-    const points = this.#pointsModel.getPoints();
+    const points = this.#pointsModel.points;
     const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
@@ -144,7 +144,7 @@ export default class Trip {
   #handleModelEvent = (updateType, data) => { // обрабатывает как отражается на представлении изменение в модели
     switch (updateType) { //обновление точки
       case UpdateType.PATCH:
-        this.#pointPresenters[data.id].init(data, this.#pointsModel.getOffers());
+        this.#pointPresenters[data.id].init(data, this.#pointsModel.offers);
         break;
       case UpdateType.MINOR: //обновление списка точек
         this.#clearPointsList();
@@ -214,7 +214,7 @@ export default class Trip {
   #renderPoint = (point) => {
     const pointPresenter =
     new PointPresenter(this.#eventsListComponent, this.#handleViewAction, this.#handleModeChange);
-    pointPresenter.init(point, this.#pointsModel.getOffers(), this.#pointsModel.getDestinations());
+    pointPresenter.init(point, this.#pointsModel.offers, this.#pointsModel.destinations);
     this.#pointPresenters[point.id] = pointPresenter;
   }
 

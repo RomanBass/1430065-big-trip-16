@@ -22,9 +22,9 @@ export default class Filter {
     const prevFilterComponent = this.#filterComponent;
 
     const AreFiltersAvailable = { // зависит от наличия точек при данном фильтре, используется для блокировки фильтров
-      EVERYTHING: (this.#pointsModel.getPoints()).length > null,
-      FUTURE: !!this.#pointsModel.getPoints().find((point) => point.dateTo > dayjs()),
-      PAST: !!this.#pointsModel.getPoints().find((point) => point.dateFrom < dayjs()),
+      EVERYTHING: (this.#pointsModel.points).length > null,
+      FUTURE: !!this.#pointsModel.points.find((point) => point.dateTo > dayjs()),
+      PAST: !!this.#pointsModel.points.find((point) => point.dateFrom < dayjs()),
     };
 
     this.#filterComponent = new FilterView(this.#filterModel.getFilter(), AreFiltersAvailable);

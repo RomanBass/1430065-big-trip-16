@@ -56,7 +56,7 @@ export default class Trip {
 
   createPoint = () => {
     this.#currentSortType = SortType.BY_DATE_FROM;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#filterModel.filter = [UpdateType.MAJOR, FilterType.EVERYTHING];
 
     if (!this.#tripContainer.contains(this.#eventsListComponent.element)) {
       this.#renderEventsList();
@@ -88,7 +88,7 @@ export default class Trip {
   }
 
   get points () {
-    this.#filterType = this.#filterModel.getFilter();
+    this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
     const filteredPoints = filter[this.#filterType](points);
 

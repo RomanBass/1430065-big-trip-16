@@ -41,7 +41,7 @@ export default class Trip {
     if (this.#isLoading) {
       this.#renderLoading();
     } else {
-      if (!this.#getPoints().length) { // если точек нет, то отображается заглушка
+      if (!this.points.length) { // если точек нет, то отображается заглушка
         this.#renderNoPoint();
       } else {
         this.#renderSort();
@@ -56,14 +56,14 @@ export default class Trip {
 
   createPoint = () => {
     this.#currentSortType = SortType.BY_DATE_FROM;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#filterModel.filter = [UpdateType.MAJOR, FilterType.EVERYTHING];
 
     if (!this.#tripContainer.contains(this.#eventsListComponent.element)) {
       this.#renderEventsList();
     }
 
-    this.#pointNewPresenter.init(BlankPoint, this.#pointsModel.getOffers(),
-      this.#pointsModel.getDestinations());
+    this.#pointNewPresenter.init(BlankPoint, this.#pointsModel.offers,
+      this.#pointsModel.destinations);
 
     remove(this.#noPointComponent);
   }
@@ -87,19 +87,19 @@ export default class Trip {
     this.#pointPresenters = {};
   }
 
-  #getPoints = () => {
-    this.#filterType = this.#filterModel.getFilter();
-    const points = this.#pointsModel.getPoints();
+  get points () {
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#pointsModel.points;
     const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
-      case SortType.BY_DATE_FROM:
-        return filteredPoints.sort(sortByDateFrom);
       case SortType.BY_PRICE:
         return filteredPoints.sort(sortByPrice);
       case SortType.BY_DURATION:
         return filteredPoints.sort(sortByDuration);
     }
+
+    return filteredPoints.sort(sortByDateFrom);
   }
 
   #handleModeChange = () => {
@@ -144,7 +144,7 @@ export default class Trip {
   #handleModelEvent = (updateType, data) => { // обрабатывает как отражается на представлении изменение в модели
     switch (updateType) { //обновление точки
       case UpdateType.PATCH:
-        this.#pointPresenters[data.id].init(data, this.#pointsModel.getOffers());
+        this.#pointPresenters[data.id].init(data, this.#pointsModel.offers);
         break;
       case UpdateType.MINOR: //обновление списка точек
         this.#clearPointsList();
@@ -155,7 +155,7 @@ export default class Trip {
         remove(this.#sortingComponent);
         remove(this.#noPointComponent); // чтобы удалялаяь надпись отсутствия точек при фильтрации в случае массива из одной точки
 
-        if (!this.#getPoints().length) {
+        if (!this.points.length) {
           this.#renderNoPoint();
         } else {
           this.#currentSortType = SortType.BY_DATE_FROM;
@@ -168,7 +168,7 @@ export default class Trip {
         this.#isLoading = false;
         remove(this.#loadingComponent);
 
-        if (!this.#getPoints().length) {
+        if (!this.points.length) {
           this.#renderNoPoint();
         } else {
           this.#currentSortType = SortType.BY_DATE_FROM;
@@ -192,7 +192,7 @@ export default class Trip {
       remove(this.#noPointComponent);
     }
 
-    if (!this.#getPoints().length) {
+    if (!this.points.length) {
       this.#noPointComponent = new NoPointView(this.#filterType);
       render(this.#tripContainer, this.#noPointComponent, RenderPosition.BEFOREEND);
     }
@@ -214,12 +214,12 @@ export default class Trip {
   #renderPoint = (point) => {
     const pointPresenter =
     new PointPresenter(this.#eventsListComponent, this.#handleViewAction, this.#handleModeChange);
-    pointPresenter.init(point, this.#pointsModel.getOffers(), this.#pointsModel.getDestinations());
+    pointPresenter.init(point, this.#pointsModel.offers, this.#pointsModel.destinations);
     this.#pointPresenters[point.id] = pointPresenter;
   }
 
   #renderPoints = () => {
-    this.#getPoints().slice().forEach((point) => this.#renderPoint(point));
+    this.points.slice().forEach((point) => this.#renderPoint(point));
   }
 
   #renderEventsList = () => {

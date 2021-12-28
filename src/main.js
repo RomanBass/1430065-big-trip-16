@@ -36,17 +36,17 @@ const siteMenuComponent = new SiteMenuView();
 render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовки компонентов...
 
 const tripInfo = new InfoAndPriceView(
-  getRoutePrice(pointsModel.getPoints()),
-  getRouteDates(pointsModel.getPoints()),
-  getRouteName(pointsModel.getPoints()));
+  getRoutePrice(pointsModel.points),
+  getRouteDates(pointsModel.points),
+  getRouteName(pointsModel.points));
 
 render(tripElement, tripInfo, RenderPosition.AFTERBEGIN);
 pointsModel.addObserver(() => {
   tripInfo.updateData(
     {
-      tripPrice: getRoutePrice(pointsModel.getPoints(), pointsModel.getOffers()),
-      tripDate: getRouteDates(pointsModel.getPoints()),
-      tripName: getRouteName(pointsModel.getPoints()),
+      tripPrice: getRoutePrice(pointsModel.points, pointsModel.offers),
+      tripDate: getRouteDates(pointsModel.points),
+      tripName: getRouteName(pointsModel.points),
     },
   );
 });
@@ -67,9 +67,9 @@ const handleSiteMenuClick = (menuOptionName) => {
       tripPresenter.destroy();
 
       statisticsComponent = new StatisticsView(
-        getMoneyByTypeData(pointsModel.getPoints()),
-        getPointsNumberByTypeData(pointsModel.getPoints()),
-        getDurationByTypeData(pointsModel.getPoints()),
+        getMoneyByTypeData(pointsModel.points),
+        getPointsNumberByTypeData(pointsModel.points),
+        getDurationByTypeData(pointsModel.points),
       );
 
       render(bodyElement, statisticsComponent, RenderPosition.BEFOREEND);
@@ -87,9 +87,9 @@ pointsModel.addObserver(() => {
   if (statisticsComponent) {
     statisticsComponent.updateData(
       {
-        tripMoneyData: getMoneyByTypeData(pointsModel.getPoints()),
-        tripTypeData: getPointsNumberByTypeData(pointsModel.getPoints()),
-        tripDurationData: getDurationByTypeData(pointsModel.getPoints()),
+        tripMoneyData: getMoneyByTypeData(pointsModel.points),
+        tripTypeData: getPointsNumberByTypeData(pointsModel.points),
+        tripDurationData: getDurationByTypeData(pointsModel.points),
       },
     );
   }
@@ -107,24 +107,24 @@ Promise
   .then((results) => {
 
     if (results[ARRAY_INDEX_ZERO].status === PROMISE_STATUS_FULFILLED) {
-      pointsModel.setOffers(results[ARRAY_INDEX_ZERO].value);
+      pointsModel.offers = results[ARRAY_INDEX_ZERO].value;
     } else {
-      pointsModel.setOffers(BlankPossibleOffers);
+      pointsModel.offers = BlankPossibleOffers;
     }
 
     if (results[ARRAY_INDEX_ONE].status === PROMISE_STATUS_FULFILLED) {
-      pointsModel.setDestinations(results[ARRAY_INDEX_ONE].value);
+      pointsModel.destinations = results[ARRAY_INDEX_ONE].value;
     } else if (results[ARRAY_INDEX_TWO].status === PROMISE_STATUS_FULFILLED) {
-      pointsModel.setDestinations(getDestinationsFromPoints(results[ARRAY_INDEX_TWO].value));
+      pointsModel.destinations = getDestinationsFromPoints(results[ARRAY_INDEX_TWO].value);
     } else {
-      pointsModel.setDestinations([]);
+      pointsModel.destinations = [];
     } /* Если не загружены назначения, то они извлекаются из точек,
         если не загружены точки, то назначениям присваивается []  */
 
     if (results[ARRAY_INDEX_TWO].status === PROMISE_STATUS_FULFILLED) {
-      pointsModel.setPoints(UpdateType.INIT, results[ARRAY_INDEX_TWO].value);
+      pointsModel.points = [UpdateType.INIT, results[ARRAY_INDEX_TWO].value];
     } else {
-      pointsModel.setPoints(UpdateType.INIT, []);
+      pointsModel.points = [UpdateType.INIT, []];
     }
 
     newPointAddButton.disabled = false; //включает кнопку после загрузки данных

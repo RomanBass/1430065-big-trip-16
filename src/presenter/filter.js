@@ -22,12 +22,12 @@ export default class Filter {
     const prevFilterComponent = this.#filterComponent;
 
     const AreFiltersAvailable = { // зависит от наличия точек при данном фильтре, используется для блокировки фильтров
-      EVERYTHING: (this.#pointsModel.getPoints()).length > null,
-      FUTURE: !!this.#pointsModel.getPoints().find((point) => point.dateTo > dayjs()),
-      PAST: !!this.#pointsModel.getPoints().find((point) => point.dateFrom < dayjs()),
+      EVERYTHING: (this.#pointsModel.points).length > null,
+      FUTURE: !!this.#pointsModel.points.find((point) => point.dateTo > dayjs()),
+      PAST: !!this.#pointsModel.points.find((point) => point.dateFrom < dayjs()),
     };
 
-    this.#filterComponent = new FilterView(this.#filterModel.getFilter(), AreFiltersAvailable);
+    this.#filterComponent = new FilterView(this.#filterModel.filter, AreFiltersAvailable);
     this.#filterComponent.setFilterTypeChangeHandler(this.#handleFilterTypeChange);
 
     if (prevFilterComponent === null) {
@@ -45,10 +45,10 @@ export default class Filter {
 
   #handleFilterTypeChange = (filterType) => {
 
-    if (this.#filterModel.getFilter() === filterType) { // производит отбой, если клик происходит по текущему фильтру
+    if (this.#filterModel.filter === filterType) { // производит отбой, если клик происходит по текущему фильтру
       return;
     }
 
-    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);  // производит изменение модели фильтров
+    this.#filterModel.filter = [UpdateType.MAJOR, filterType];  // производит изменение модели фильтров
   }
 }

@@ -1,6 +1,6 @@
 import FilterView from '../view/filter.js';
 import { render, RenderPosition, replace, remove } from '../utils/render.js';
-import { UpdateType } from '../utils/const.js';
+import { UpdateType, FilterType } from '../utils/const.js';
 import dayjs from 'dayjs';
 
 export default class Filter {
@@ -40,8 +40,11 @@ export default class Filter {
   }
 
   destroy = () => {
+    this.#filtersModel.filter = [UpdateType.MINOR, FilterType.EVERYTHING];
+    //...чтобы при добавлении точки при открытой статистике фильтр сбрасывался на дефолт
     remove(this.#filterComponent);
     this.#filterComponent = null;
+
 
     this.#pointsModel.removeObserver(this.#handleModelEvent);
     this.#filtersModel.removeObserver(this.#handleModelEvent);

@@ -101,6 +101,14 @@ newPointAddButton.disabled = true; //отключает кнопку на вре
 
 newPointAddButton.addEventListener('click', (evt) => {
   evt.preventDefault();
+  remove(statisticsComponent);
+  tripPresenter.destroy();
+  tripPresenter.init();
+  filterPresenter.destroy();
+  filterPresenter.init();
+  remove(siteMenuComponent);
+  render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовки компонентов...
+  siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
   tripPresenter.createPoint();
 });
 

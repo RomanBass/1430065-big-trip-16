@@ -49,6 +49,6 @@ export default class Filter {
       return;
     }
 
-    this.#filterModel.filter = [UpdateType.MAJOR, filterType];  // производит изменение модели фильтров
+    this.#filterModel.filter = [UpdateType.MINOR, filterType];  // производит изменение модели фильтров
   }
 }

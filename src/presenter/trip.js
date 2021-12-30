@@ -44,6 +44,7 @@ export default class Trip {
       if (!this.points.length) { // если точек нет, то отображается заглушка
         this.#renderNoPoint();
       } else {
+      //  this.#currentSortType = SortType.BY_DATE_FROM;
         this.#renderSort();
         this.#renderEventsList();
         this.#renderPoints();

@@ -12,7 +12,7 @@ import LoadingView from '../view/loading.js';
 
 export default class Trip {
   #pointsModel = null;
-  #filterModel = null;
+  #filtersModel = null;
   #tripContainer = null;
   #sortingComponent = null;
   #noPointComponent = null;
@@ -27,7 +27,7 @@ export default class Trip {
 
   constructor(tripContainer, pointsModel, filterModel, api) {
     this.#pointsModel = pointsModel;
-    this.#filterModel = filterModel;
+    this.#filtersModel = filterModel;
     this.#tripContainer = tripContainer;
     this.#api = api;
 
@@ -44,6 +44,7 @@ export default class Trip {
       if (!this.points.length) { // если точек нет, то отображается заглушка
         this.#renderNoPoint();
       } else {
+        this.#currentSortType = SortType.BY_DATE_FROM;
         this.#renderSort();
         this.#renderEventsList();
         this.#renderPoints();
@@ -51,12 +52,12 @@ export default class Trip {
     }
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
-    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#filtersModel.addObserver(this.#handleModelEvent);
   }
 
   createPoint = () => {
     this.#currentSortType = SortType.BY_DATE_FROM;
-    this.#filterModel.filter = [UpdateType.MAJOR, FilterType.EVERYTHING];
+    this.#filtersModel.filter = [UpdateType.MAJOR, FilterType.EVERYTHING];
 
     if (!this.#tripContainer.contains(this.#eventsListComponent.element)) {
       this.#renderEventsList();
@@ -76,7 +77,7 @@ export default class Trip {
     remove(this.#loadingComponent);
 
     this.#pointsModel.removeObserver(this.#handleModelEvent);
-    this.#filterModel.removeObserver(this.#handleModelEvent);
+    this.#filtersModel.removeObserver(this.#handleModelEvent);
   }
 
   #clearPointsList = () => { // удаляет все точки
@@ -88,7 +89,7 @@ export default class Trip {
   }
 
   get points () {
-    this.#filterType = this.#filterModel.filter;
+    this.#filterType = this.#filtersModel.filter;
     const points = this.#pointsModel.points;
     const filteredPoints = filter[this.#filterType](points);
 

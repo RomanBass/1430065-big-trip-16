@@ -61,10 +61,12 @@ const handleSiteMenuClick = (menuOptionName) => {
   switch (menuOptionName) {
     case MenuItem.TABLE:
       tripPresenter.init();
+      filterPresenter.init();
       remove(statisticsComponent);
       break;
     case MenuItem.STATISTICS:
       tripPresenter.destroy();
+      filterPresenter.destroy();
 
       statisticsComponent = new StatisticsView(
         getMoneyByTypeData(pointsModel.points),
@@ -97,8 +99,16 @@ pointsModel.addObserver(() => {
 
 newPointAddButton.disabled = true; //отключает кнопку на время загрузки данных
 
-newPointAddButton.addEventListener('click', (evt) => {
+newPointAddButton.addEventListener('click', (evt) => { //нажатие кнопки добавления точки
   evt.preventDefault();
+  remove(statisticsComponent);
+  tripPresenter.destroy();
+  tripPresenter.init();
+  filterPresenter.destroy();
+  filterPresenter.init();
+  remove(siteMenuComponent);
+  render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовка меню
+  siteMenuComponent.setMenuClickHandler(handleSiteMenuClick); // установка обработчиков
   tripPresenter.createPoint();
 });
 

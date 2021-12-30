@@ -61,10 +61,12 @@ const handleSiteMenuClick = (menuOptionName) => {
   switch (menuOptionName) {
     case MenuItem.TABLE:
       tripPresenter.init();
+      filterPresenter.init();
       remove(statisticsComponent);
       break;
     case MenuItem.STATISTICS:
       tripPresenter.destroy();
+      filterPresenter.destroy();
 
       statisticsComponent = new StatisticsView(
         getMoneyByTypeData(pointsModel.points),

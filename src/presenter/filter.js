@@ -5,16 +5,16 @@ import dayjs from 'dayjs';
 
 export default class Filter {
   #filterContainer = null;
-  #filterModel = null;
+  #filtersModel = null;
   #pointsModel = null;
   #filterComponent = null;
 
   constructor (filterContainer, filterModel, pointsModel) {
     this.#filterContainer = filterContainer;
-    this.#filterModel = filterModel;
+    this.#filtersModel = filterModel;
     this.#pointsModel = pointsModel;
 
-    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#filtersModel.addObserver(this.#handleModelEvent);
     this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
@@ -27,7 +27,7 @@ export default class Filter {
       PAST: !!this.#pointsModel.points.find((point) => point.dateFrom < dayjs()),
     };
 
-    this.#filterComponent = new FilterView(this.#filterModel.filter, AreFiltersAvailable);
+    this.#filterComponent = new FilterView(this.#filtersModel.filter, AreFiltersAvailable);
     this.#filterComponent.setFilterTypeChangeHandler(this.#handleFilterTypeChange);
 
     if (prevFilterComponent === null) {
@@ -39,16 +39,24 @@ export default class Filter {
     remove(prevFilterComponent);
   }
 
+  destroy = () => {
+    remove(this.#filterComponent);
+    this.#filterComponent = null;
+
+    this.#pointsModel.removeObserver(this.#handleModelEvent);
+    this.#filtersModel.removeObserver(this.#handleModelEvent);
+  }
+
   #handleModelEvent = () => {
     this.init();
   }
 
   #handleFilterTypeChange = (filterType) => {
 
-    if (this.#filterModel.filter === filterType) { // производит отбой, если клик происходит по текущему фильтру
+    if (this.#filtersModel.filter === filterType) { // производит отбой, если клик происходит по текущему фильтру
       return;
     }
 
-    this.#filterModel.filter = [UpdateType.MINOR, filterType];  // производит изменение модели фильтров
+    this.#filtersModel.filter = [UpdateType.MINOR, filterType];  // производит изменение модели фильтров
   }
 }

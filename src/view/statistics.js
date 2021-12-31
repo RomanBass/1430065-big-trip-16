@@ -94,10 +94,10 @@ const renderMoneyChart = (moneyCtx, moneyData) => (
         }],
       },
       legend: {
-        display: false,
+        display: CHART_PARAMETERS.LEGEND_DISPLAY,
       },
       tooltips: {
-        enabled: false,
+        enabled: CHART_PARAMETERS.LEGEND_TOOLTIPS_ENABLED,
       },
     },
   })
@@ -161,10 +161,10 @@ const renderTypeChart = (typeCtx, typeData) => (
         }],
       },
       legend: {
-        display: false,
+        display: CHART_PARAMETERS.LEGEND_DISPLAY,
       },
       tooltips: {
-        enabled: false,
+        enabled: CHART_PARAMETERS.LEGEND_TOOLTIPS_ENABLED,
       },
     },
   })
@@ -228,10 +228,10 @@ const renderDurationChart = (durationCtx, durationData) => (
         }],
       },
       legend: {
-        display: false,
+        display: CHART_PARAMETERS.LEGEND_DISPLAY,
       },
       tooltips: {
-        enabled: false,
+        enabled: CHART_PARAMETERS.LEGEND_TOOLTIPS_ENABLED,
       },
     },
   })

@@ -85,7 +85,7 @@ export default class Api {
       .catch(Api.catchError);
   }
 
-  static checkStatus(response) {
+  static checkStatus = (response) => {
     if (
       response.status < SuccessHTTPStatusRange.MIN ||
       response.status > SuccessHTTPStatusRange.MAX
@@ -96,11 +96,9 @@ export default class Api {
     return response;
   }
 
-  static toJSON(response) {
-    return response.json();
-  }
+  static toJSON = (response) => response.json();
 
-  static catchError(err) {
+  static catchError = (err) => {
     throw err;
   }
 }

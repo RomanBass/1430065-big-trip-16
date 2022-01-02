@@ -22,25 +22,25 @@ export default class Api {
   }
 
   get points() {
-    return this._load({url: 'points'})
+    return this.#load({url: 'points'})
       .then(Api.toJSON)
       .then((points) => points.map(PointsModel.adaptPointsToClient));
   }
 
   get offers() {
-    return this._load({url: 'offers'})
+    return this.#load({url: 'offers'})
       .then(Api.toJSON)
       .then((offers) => PointsModel.adaptOffersToClient(offers));
   }
 
   get destinations() {
-    return this._load({url: 'destinations'})
+    return this.#load({url: 'destinations'})
       .then(Api.toJSON)
       .then((destinations) => destinations);
   }
 
   updatePoint(point) {
-    return this._load({
+    return this.#load({
       url: `points/${point.id}`,
       method: Method.PUT,
       body: JSON.stringify(PointsModel.adaptPointsToServer(point)),
@@ -51,7 +51,7 @@ export default class Api {
   }
 
   addPoint(point) {
-    return this._load({
+    return this.#load({
       url: 'points',
       method: Method.POST,
       body: JSON.stringify(PointsModel.adaptPointsToServer(point)),
@@ -62,15 +62,23 @@ export default class Api {
   }
 
   deletePoint(point) {
-    return this._load({
+    return this.#load({
       url: `points/${point.id}`,
       method: Method.DELETE,
     });
   }
 
 
-  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
+  #load = async ({url, method = Method.GET, body = null, headers = new Headers()}) => {
     headers.append('Authorization', this.#authorization);
+
+    const response = await fetch(`${this.#endPoint}/${url}`, {method, body, headers});
+
+    try {
+      Api.checkStatus(response);
+    } catch (err) {
+      Api.catchError(err);
+    }
 
     return fetch(`${this.#endPoint}/${url}`, {method, body, headers})
       .then(Api.checkStatus)

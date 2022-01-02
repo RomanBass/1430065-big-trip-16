@@ -15,7 +15,7 @@ import Api from './api.js';
 import { getDestinationsFromPoints } from './utils/route.js';
 
 const AUTHORIZATION = 'Basic df9df9df8sd8fg8u';
-const END_POINT = 'https://15.ecmascript.pages.academy/big-trip';
+const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
 const PROMISE_STATUS_FULFILLED = 'fulfilled';
 
 const siteHeaderElement = document.querySelector('.page-header'); // крупный блок
@@ -113,7 +113,7 @@ newPointAddButton.addEventListener('click', (evt) => { //нажатие кноп
 });
 
 Promise
-  .allSettled([api.getOffers(), api.getDestinations(), api.getPoints()])
+  .allSettled([api.offers, api.destinations, api.points])
   .then((results) => {
 
     if (results[ARRAY_INDEX_ZERO].status === PROMISE_STATUS_FULFILLED) {

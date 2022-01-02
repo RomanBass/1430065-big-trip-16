@@ -13,24 +13,27 @@ const SuccessHTTPStatusRange = {
 };
 
 export default class Api {
+  #endPoint = null;
+  #authorization = null;
+
   constructor(endPoint, authorization) {
-    this._endPoint = endPoint;
-    this._authorization = authorization;
+    this.#endPoint = endPoint;
+    this.#authorization = authorization;
   }
 
-  getPoints() {
+  get points() {
     return this._load({url: 'points'})
       .then(Api.toJSON)
       .then((points) => points.map(PointsModel.adaptPointsToClient));
   }
 
-  getOffers() {
+  get offers() {
     return this._load({url: 'offers'})
       .then(Api.toJSON)
       .then((offers) => PointsModel.adaptOffersToClient(offers));
   }
 
-  getDestinations() {
+  get destinations() {
     return this._load({url: 'destinations'})
       .then(Api.toJSON)
       .then((destinations) => destinations);
@@ -67,9 +70,9 @@ export default class Api {
 
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
-    headers.append('Authorization', this._authorization);
+    headers.append('Authorization', this.#authorization);
 
-    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
+    return fetch(`${this.#endPoint}/${url}`, {method, body, headers})
       .then(Api.checkStatus)
       .catch(Api.catchError);
   }

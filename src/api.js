@@ -23,50 +23,75 @@ export default class Api {
 
   get points() {
     return this.#load({url: 'points'})
-      .then(Api.toJSON)
-      .then((points) => points.map(PointsModel.adaptPointsToClient));
+      .then(Api.parseResponse);
+    // .then((points) => points.map(PointsModel.adaptPointsToClient));
   }
 
   get offers() {
     return this.#load({url: 'offers'})
-      .then(Api.toJSON)
-      .then((offers) => PointsModel.adaptOffersToClient(offers));
+      .then(Api.parseResponse);
+    // .then((offers) => PointsModel.adaptOffersToClient(offers));
   }
 
   get destinations() {
     return this.#load({url: 'destinations'})
-      .then(Api.toJSON)
-      .then((destinations) => destinations);
+      .then(Api.parseResponse);
+    // .then((destinations) => destinations);
   }
 
-  updatePoint(point) {
-    return this.#load({
+  updatePoint = async (point) => {
+    const response = await this.#load({
       url: `points/${point.id}`,
       method: Method.PUT,
-      body: JSON.stringify(PointsModel.adaptPointsToServer(point)),
+      body: JSON.stringify(this.#adaptPointsToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
-    })
-      .then(Api.toJSON)
-      .then(PointsModel.adaptPointsToClient);
+    });
+
+    const parsedResponse = await Api.parseResponse(response);
+
+    return parsedResponse;
   }
 
-  addPoint(point) {
-    return this.#load({
+  addPoint = async (point) => {
+    const response = await this.#load({
       url: 'points',
       method: Method.POST,
-      body: JSON.stringify(PointsModel.adaptPointsToServer(point)),
+      body: JSON.stringify(this.#adaptPointsToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
-    })
-      .then(Api.toJSON)
-      .then(PointsModel.adaptPointsToClient);
+    });
+
+    const parsedResponse = await Api.parseResponse(response);
+
+    return parsedResponse;
   }
 
-  deletePoint(point) {
-    return this.#load({
+  // addPoint(point) {
+  //   return this.#load({
+  //     url: 'points',
+  //     method: Method.POST,
+  //     body: JSON.stringify(PointsModel.adaptPointsToServer(point)),
+  //     headers: new Headers({'Content-Type': 'application/json'}),
+  //   })
+  //     .then(Api.parseResponse)
+  //     .then(PointsModel.adaptPointsToClient);
+  // }
+
+  deletePoint = async (point) => {
+    const response = await this.#load({
       url: `points/${point.id}`,
       method: Method.DELETE,
     });
+
+    return response;
   }
+
+
+  // deletePoint(point) {
+  //   return this.#load({
+  //     url: `points/${point.id}`,
+  //     method: Method.DELETE,
+  //   });
+  // }
 
 
   #load = async ({url, method = Method.GET, body = null, headers = new Headers()}) => {
@@ -85,6 +110,26 @@ export default class Api {
       .catch(Api.catchError);
   }
 
+  #adaptPointsToServer = (point) => {
+    const adaptedPoint = Object.assign(
+      {},
+      point,
+      {
+        'base_price': point.basePrice,
+        'date_from': point.dateFrom.toISOString(),
+        'date_to': point.dateTo.toISOString(),
+        'is_favorite': point.isFavorite,
+      },
+    );
+
+    delete adaptedPoint.basePrice;
+    delete adaptedPoint.dateFrom;
+    delete adaptedPoint.dateTo;
+    delete adaptedPoint.isFavorite;
+
+    return adaptedPoint;
+  }
+
   static checkStatus = (response) => {
     if (
       response.status < SuccessHTTPStatusRange.MIN ||
@@ -96,7 +141,7 @@ export default class Api {
     return response;
   }
 
-  static toJSON = (response) => response.json();
+  static parseResponse = (response) => response.json();
 
   static catchError = (err) => {
     throw err;

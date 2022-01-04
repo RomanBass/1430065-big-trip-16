@@ -1,77 +1,126 @@
 import Observer from '../utils/observer.js';
 import dayjs from 'dayjs';
+import { UpdateType } from '../utils/const.js';
+
 
 export default class Points extends Observer {
   #points = [];
   #offers = {};
   #destinations = [];
+  #apiService = null;
 
-  set points([updateType, points]) {
-    this.#points = [...points];
-    this._notify(updateType);
+  constructor(apiService) {
+    super();
+    this.#apiService = apiService;
+
+    //   this.#apiService.points.then((points) => {
+    //     console.log(points);
+    //   });
+    // }
+
+  // set points([updateType, points]) {
+  //   this.#points = [...points];
+  //   this._notify(updateType);
+  }
+
+  init = async () => {
+    const points = await this.#apiService.points;
+    this.#points = points.map(this.#adaptPointsToClient);
+
+    const offers = await this.#apiService.offers;
+    this.#offers = this.#adaptOffersToClient(offers);
+
+    const destinations = await this.#apiService.destinations;
+    this.#destinations = destinations;
+
+    this._notify(UpdateType.INIT);
   }
 
   get points() {
     return this.#points;
   }
 
-  set offers(offers) {
-    this.#offers = offers;
-  }
+  // set offers(offers) {
+  //   this.#offers = offers;
+  // }
 
   get offers() {
     return this.#offers;
   }
 
-  set destinations(destinations) {
-    this.#destinations = destinations;
-  }
+  // set destinations(destinations) {
+  //   this.#destinations = destinations;
+  // }
 
   get destinations() {
     return this.#destinations;
   }
 
-  updatePoint = (updateType, update) => {
+  updatePoint = async (updateType, update) => {
     const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting point');
     }
 
-    this.#points = [
-      ...this.#points.slice(0, index),
-      update,
-      ...this.#points.slice(index + 1),
-    ];
+    //try {
+      const response = await this.#apiService.updatePoint(update);
+      const updatedPoint = this.#adaptPointsToClient(response);
 
-    this._notify(updateType, update);
+
+      this.#points = [
+        ...this.#points.slice(0, index),
+        updatedPoint,
+        ...this.#points.slice(index + 1),
+      ];
+
+      this._notify(updateType, updatedPoint);
+
+    // } catch(err) {
+    //   throw new Error('Can\'t update task');
+    // }
+
   }
 
-  addPoint = (updateType, update) => {
-    this.#points = [
-      update,
-      ...this.#points,
-    ];
+  addPoint = async (updateType, update) => {
+    //try {
+      const response = await this.#apiService.addPoint(update);
+      const newPoint = this.#adaptPointsToClient(response);
 
-    this._notify(updateType, update);
+      this.#points = [newPoint, ...this.#points];
+
+      this._notify(updateType, newPoint);
+
+    // } catch(err) {
+    //   throw new Error('Can\'t update task');
+    // }
+
   }
 
-  deletePoint = (updateType, update) => {
+  deletePoint = async (updateType, update) => {
     const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t delete unexisting point');
     }
 
+    await this.#apiService.deletePoint(update);
     this.#points = [
       ...this.#points.slice(0, index),
       ...this.#points.slice(index + 1),
     ];
 
     this._notify(updateType);
+
+    // this.#points = [
+    //   ...this.#points.slice(0, index),
+    //   ...this.#points.slice(index + 1),
+    // ];
+
+    // this._notify(updateType);
   }
 
-  static adaptPointsToClient(point) {
+  #adaptPointsToClient = (point) => {
     const adaptedPoint = Object.assign(
       {},
       point,
@@ -91,27 +140,27 @@ export default class Points extends Observer {
     return adaptedPoint;
   }
 
-  static adaptPointsToServer(point) {
-    const adaptedPoint = Object.assign(
-      {},
-      point,
-      {
-        'base_price': point.basePrice,
-        'date_from': point.dateFrom.toISOString(),
-        'date_to': point.dateTo.toISOString(),
-        'is_favorite': point.isFavorite,
-      },
-    );
+  // static adaptPointsToServer(point) {
+  //   const adaptedPoint = Object.assign(
+  //     {},
+  //     point,
+  //     {
+  //       'base_price': point.basePrice,
+  //       'date_from': point.dateFrom.toISOString(),
+  //       'date_to': point.dateTo.toISOString(),
+  //       'is_favorite': point.isFavorite,
+  //     },
+  //   );
 
-    delete adaptedPoint.basePrice;
-    delete adaptedPoint.dateFrom;
-    delete adaptedPoint.dateTo;
-    delete adaptedPoint.isFavorite;
+  //   delete adaptedPoint.basePrice;
+  //   delete adaptedPoint.dateFrom;
+  //   delete adaptedPoint.dateTo;
+  //   delete adaptedPoint.isFavorite;
 
-    return adaptedPoint;
-  }
+  //   return adaptedPoint;
+  // }
 
-  static adaptOffersToClient(serverOffers) {
+  #adaptOffersToClient = (serverOffers) => {
     const adaptedOffers = {};
     serverOffers.forEach((serverOffer) => {
       adaptedOffers[serverOffer.type] = serverOffer.offers;

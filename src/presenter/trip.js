@@ -113,31 +113,34 @@ export default class Trip {
   #handleViewAction = (actionType, updateType, update) => { //обрабатывает как отражается на модели действие на представлении
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#api.updatePoint(update)
-          .then((response) => {
-            this.#pointsModel.updatePoint(updateType, response);
-          })
-          .catch(() => {
-            this.#pointPresenters[update.id].abortingFormSubmit();
-          });
+        this.#pointsModel.updatePoint(updateType, update);
+        // this.#api.updatePoint(update)
+        //   .then((response) => {
+        //     this.#pointsModel.updatePoint(updateType, response);
+        //   })
+        //   .catch(() => {
+        //     this.#pointPresenters[update.id].abortingFormSubmit();
+        //   });
         break;
       case UserAction.ADD_POINT:
-        this.#api.addPoint(update)
-          .then((response) => {
-            this.#pointsModel.addPoint(updateType, response);
-          })
-          .catch(() => {
-            this.#pointNewPresenter.abortingPointAdding();
-          });
+        this.#pointsModel.addPoint(updateType, update);
+        // this.#api.addPoint(update)
+        //   .then((response) => {
+        //     this.#pointsModel.addPoint(updateType, response);
+        //   })
+        //   .catch(() => {
+        //     this.#pointNewPresenter.abortingPointAdding();
+        //   });
         break;
       case UserAction.DELETE_POINT:
-        this.#api.deletePoint(update)
-          .then(() => {
-            this.#pointsModel.deletePoint(updateType, update);
-          })
-          .catch(() => {
-            this.#pointPresenters[update.id].abortingPointDelete();
-          });
+        this.#pointsModel.deletePoint(updateType, update);
+        // this.#api.deletePoint(update)
+        //   .then(() => {
+        //     this.#pointsModel.deletePoint(updateType, update);
+        //   })
+        //   .catch(() => {
+        //     this.#pointPresenters[update.id].abortingPointDelete();
+        //   });
         break;
     }
   }

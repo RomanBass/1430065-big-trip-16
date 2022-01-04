@@ -11,7 +11,7 @@ import { MenuItem, UpdateType, BlankPossibleOffers, ARRAY_INDEX_ZERO, ARRAY_INDE
 import StatisticsView from './view/statistics.js';
 import { getMoneyByTypeData, getPointsNumberByTypeData, getDurationByTypeData}
   from  './utils/statistics.js';
-import Api from './api.js';
+import ApiService from './api.js';
 import { getDestinationsFromPoints } from './utils/route.js';
 
 const AUTHORIZATION = 'Basic df9df9df8sd8fg8u';
@@ -28,9 +28,10 @@ const tripEventsElement = document.querySelector('.trip-events');
 const newPointAddButton = siteHeaderElement.querySelector('.trip-main__event-add-btn');
 //...кнопка добавления точки
 
-const api = new Api(END_POINT, AUTHORIZATION);
+const api = new ApiService(END_POINT, AUTHORIZATION);
 const filterModel = new FilterModel();
-const pointsModel = new PointsModel();
+//const pointsModel = new PointsModel();
+const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
 const siteMenuComponent = new SiteMenuView();
 
 render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовки компонентов...
@@ -97,7 +98,7 @@ pointsModel.addObserver(() => {
   }
 });
 
-newPointAddButton.disabled = true; //отключает кнопку на время загрузки данных
+//newPointAddButton.disabled = true; //отключает кнопку на время загрузки данных
 
 newPointAddButton.addEventListener('click', (evt) => { //нажатие кнопки добавления точки
   evt.preventDefault();
@@ -112,31 +113,33 @@ newPointAddButton.addEventListener('click', (evt) => { //нажатие кноп
   tripPresenter.createPoint();
 });
 
-Promise
-  .allSettled([api.offers, api.destinations, api.points])
-  .then((results) => {
+// Promise
+//   .allSettled([api.offers, api.destinations, api.points])
+//   .then((results) => {
 
-    if (results[ARRAY_INDEX_ZERO].status === PROMISE_STATUS_FULFILLED) {
-      pointsModel.offers = results[ARRAY_INDEX_ZERO].value;
-    } else {
-      pointsModel.offers = BlankPossibleOffers;
-    }
+//     if (results[ARRAY_INDEX_ZERO].status === PROMISE_STATUS_FULFILLED) {
+//       pointsModel.offers = results[ARRAY_INDEX_ZERO].value;
+//     } else {
+//       pointsModel.offers = BlankPossibleOffers;
+//     }
 
-    if (results[ARRAY_INDEX_ONE].status === PROMISE_STATUS_FULFILLED) {
-      pointsModel.destinations = results[ARRAY_INDEX_ONE].value;
-    } else if (results[ARRAY_INDEX_TWO].status === PROMISE_STATUS_FULFILLED) {
-      pointsModel.destinations = getDestinationsFromPoints(results[ARRAY_INDEX_TWO].value);
-    } else {
-      pointsModel.destinations = [];
-    } /* Если не загружены назначения, то они извлекаются из точек,
-        если не загружены точки, то назначениям присваивается []  */
+//     if (results[ARRAY_INDEX_ONE].status === PROMISE_STATUS_FULFILLED) {
+//       pointsModel.destinations = results[ARRAY_INDEX_ONE].value;
+//     } else if (results[ARRAY_INDEX_TWO].status === PROMISE_STATUS_FULFILLED) {
+//       pointsModel.destinations = getDestinationsFromPoints(results[ARRAY_INDEX_TWO].value);
+//     } else {
+//       pointsModel.destinations = [];
+//     } /* Если не загружены назначения, то они извлекаются из точек,
+//         если не загружены точки, то назначениям присваивается []  */
 
-    if (results[ARRAY_INDEX_TWO].status === PROMISE_STATUS_FULFILLED) {
-      pointsModel.points = [UpdateType.INIT, results[ARRAY_INDEX_TWO].value];
-    } else {
-      pointsModel.points = [UpdateType.INIT, []];
-    }
+//     if (results[ARRAY_INDEX_TWO].status === PROMISE_STATUS_FULFILLED) {
+//       pointsModel.points = [UpdateType.INIT, results[ARRAY_INDEX_TWO].value];
+//     } else {
+//       pointsModel.points = [UpdateType.INIT, []];
+//     }
 
-    newPointAddButton.disabled = false; //включает кнопку после загрузки данных
+//     newPointAddButton.disabled = false; //включает кнопку после загрузки данных
 
-  });
+//   });
+
+pointsModel.init();

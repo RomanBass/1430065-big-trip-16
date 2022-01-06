@@ -101,13 +101,14 @@ export default class Api {
 
     try {
       Api.checkStatus(response);
+      return response;
     } catch (err) {
       Api.catchError(err);
     }
 
-    return fetch(`${this.#endPoint}/${url}`, {method, body, headers})
-      .then(Api.checkStatus)
-      .catch(Api.catchError);
+    // return fetch(`${this.#endPoint}/${url}`, {method, body, headers})
+    //   .then(Api.checkStatus)
+    //   .catch(Api.catchError);
   }
 
   #adaptPointsToServer = (point) => {
@@ -129,6 +130,12 @@ export default class Api {
 
     return adaptedPoint;
   }
+
+  // static checkStatus = (response) => {
+  //   if (!response.ok) {
+  //     throw new Error(`${response.status}: ${response.statusText}`);
+  //   }
+  // }
 
   static checkStatus = (response) => {
     if (

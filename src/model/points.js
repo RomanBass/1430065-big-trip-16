@@ -25,12 +25,13 @@ export default class Points extends Observer {
 
   init = async () => {
     const points = await this.#apiService.points;
+    const offers = await this.#apiService.offers;
+    const destinations = await this.#apiService.destinations;
+
     this.#points = points.map(this.#adaptPointsToClient);
 
-    const offers = await this.#apiService.offers;
+    this.#offers = offers;
     this.#offers = this.#adaptOffersToClient(offers);
-
-    const destinations = await this.#apiService.destinations;
     this.#destinations = destinations;
 
     this._notify(UpdateType.INIT);
@@ -63,7 +64,7 @@ export default class Points extends Observer {
       throw new Error('Can\'t update unexisting point');
     }
 
-    //try {
+    try {
       const response = await this.#apiService.updatePoint(update);
       const updatedPoint = this.#adaptPointsToClient(response);
 
@@ -76,14 +77,14 @@ export default class Points extends Observer {
 
       this._notify(updateType, updatedPoint);
 
-    // } catch(err) {
-    //   throw new Error('Can\'t update task');
-    // }
+    } catch(err) {
+      throw new Error('Can\'t update task');
+    }
 
   }
 
   addPoint = async (updateType, update) => {
-    //try {
+    try {
       const response = await this.#apiService.addPoint(update);
       const newPoint = this.#adaptPointsToClient(response);
 
@@ -91,9 +92,9 @@ export default class Points extends Observer {
 
       this._notify(updateType, newPoint);
 
-    // } catch(err) {
-    //   throw new Error('Can\'t update task');
-    // }
+    } catch(err) {
+      throw new Error('Can\'t update task');
+    }
 
   }
 
@@ -112,12 +113,6 @@ export default class Points extends Observer {
 
     this._notify(updateType);
 
-    // this.#points = [
-    //   ...this.#points.slice(0, index),
-    //   ...this.#points.slice(index + 1),
-    // ];
-
-    // this._notify(updateType);
   }
 
   #adaptPointsToClient = (point) => {

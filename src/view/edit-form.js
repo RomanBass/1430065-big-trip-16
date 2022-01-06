@@ -10,11 +10,11 @@ const createDataListTemplate = (cityName) => `<option value="${cityName}"></opti
 //...возвращает образец ДОМ элемента в datalist наименований городов
 
 const createOptionTemplate = (offer, isChecked) => { //возвращает образец ДОМ элемента опции
-  const {title, price} = offer;
+  const {id, title, price} = offer;
   return `<div class="event__offer-selector">
-  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${title}" type="checkbox"
+  <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox"
   name="event-offer-${title}" ${isChecked}>
-  <label class="event__offer-label" for="event-offer-${title}">
+  <label class="event__offer-label" for="${id}">
     <span class="event__offer-title">${title}</span>
     &plus;&euro;&nbsp;
     <span class="event__offer-price">${price}</span>
@@ -357,6 +357,9 @@ export default class EditForm extends SmartView {
     const clickedOptionTitle = evt.target.parentElement.querySelector('label span:first-child')
       .textContent; //достаёт из разметки наименование кликУемой опции
 
+    const clickedOptionId = evt.target.parentElement.querySelector('input').id;
+    //...достаёт из разметки ID-шник кликУемой опции
+
     const isClickedOption = this._data.offers.some((option) => option.title === clickedOptionTitle);
     //...флаг проверки наличия кликнутой опции в массиве опций данной точки
 
@@ -367,7 +370,7 @@ export default class EditForm extends SmartView {
       const clickedOptionPrice = evt.target.parentElement.querySelector('label span:last-child')
         .textContent; //достаёт из раметки цену кликуемой опции
 
-      const ClickedOption = {title: clickedOptionTitle,
+      const ClickedOption = {id: parseInt(clickedOptionId, RADIX_10), title: clickedOptionTitle,
         price: parseInt(clickedOptionPrice, RADIX_10)}; //создаёт объект кликнутой опции
 
       this._data.offers.unshift(ClickedOption);

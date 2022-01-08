@@ -118,13 +118,6 @@ export default class Trip {
         } catch(err) {
           this.#pointPresenters[update.id].abortingFormSubmit();
         }
-        // this.#api.updatePoint(update)
-        //   .then((response) => {
-        //     this.#pointsModel.updatePoint(updateType, response);
-        //   })
-        //   .catch(() => {
-        //     this.#pointPresenters[update.id].abortingFormSubmit();
-        //   });
         break;
       case UserAction.ADD_POINT:
         try {
@@ -132,13 +125,6 @@ export default class Trip {
         } catch {
           this.#pointNewPresenter.abortingPointAdding();
         }
-        // this.#api.addPoint(update)
-        //   .then((response) => {
-        //     this.#pointsModel.addPoint(updateType, response);
-        //   })
-        //   .catch(() => {
-        //     this.#pointNewPresenter.abortingPointAdding();
-        //   });
         break;
       case UserAction.DELETE_POINT:
         try {
@@ -146,13 +132,6 @@ export default class Trip {
         } catch {
           this.#pointPresenters[update.id].abortingPointDelete();
         }
-        // this.#api.deletePoint(update)
-        //   .then(() => {
-        //     this.#pointsModel.deletePoint(updateType, update);
-        //   })
-        //   .catch(() => {
-        //     this.#pointPresenters[update.id].abortingPointDelete();
-        //   });
         break;
     }
   }

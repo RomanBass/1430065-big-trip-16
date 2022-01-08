@@ -12,15 +12,6 @@ export default class Points extends Observer {
   constructor(apiService) {
     super();
     this.#apiService = apiService;
-
-    //   this.#apiService.points.then((points) => {
-    //     console.log(points);
-    //   });
-    // }
-
-  // set points([updateType, points]) {
-  //   this.#points = [...points];
-  //   this._notify(updateType);
   }
 
   init = async () => {
@@ -29,7 +20,6 @@ export default class Points extends Observer {
       this.#points = points.map(this.#adaptPointsToClient);
     } catch(err) {
       this.#points = [];
-      console.log('catch_points_err');
     }
 
     try {
@@ -37,7 +27,6 @@ export default class Points extends Observer {
       this.#offers = this.#adaptOffersToClient(offers);
     } catch(err){
       this.#offers = BlankPossibleOffers;
-      console.log('catch_offers_err');
     }
 
     try {
@@ -45,7 +34,6 @@ export default class Points extends Observer {
       this.#destinations = destinations;
     } catch {
       this.#destinations = getDestinationsFromPoints(this.points);
-      console.log('catch_destinations_err');
     }
 
     this._notify(UpdateType.INIT);
@@ -55,17 +43,9 @@ export default class Points extends Observer {
     return this.#points;
   }
 
-  // set offers(offers) {
-  //   this.#offers = offers;
-  // }
-
   get offers() {
     return this.#offers;
   }
-
-  // set destinations(destinations) {
-  //   this.#destinations = destinations;
-  // }
 
   get destinations() {
     return this.#destinations;
@@ -148,26 +128,6 @@ export default class Points extends Observer {
 
     return adaptedPoint;
   }
-
-  // static adaptPointsToServer(point) {
-  //   const adaptedPoint = Object.assign(
-  //     {},
-  //     point,
-  //     {
-  //       'base_price': point.basePrice,
-  //       'date_from': point.dateFrom.toISOString(),
-  //       'date_to': point.dateTo.toISOString(),
-  //       'is_favorite': point.isFavorite,
-  //     },
-  //   );
-
-  //   delete adaptedPoint.basePrice;
-  //   delete adaptedPoint.dateFrom;
-  //   delete adaptedPoint.dateTo;
-  //   delete adaptedPoint.isFavorite;
-
-  //   return adaptedPoint;
-  // }
 
   #adaptOffersToClient = (serverOffers) => {
     const adaptedOffers = {};

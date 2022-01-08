@@ -1,5 +1,3 @@
-import PointsModel from './model/points.js';
-
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
@@ -24,19 +22,16 @@ export default class Api {
   get points() {
     return this.#load({url: 'points'})
       .then(Api.parseResponse);
-    // .then((points) => points.map(PointsModel.adaptPointsToClient));
   }
 
   get offers() {
     return this.#load({url: 'offers'})
       .then(Api.parseResponse);
-    // .then((offers) => PointsModel.adaptOffersToClient(offers));
   }
 
   get destinations() {
     return this.#load({url: 'destinations'})
       .then(Api.parseResponse);
-    // .then((destinations) => destinations);
   }
 
   updatePoint = async (point) => {
@@ -65,17 +60,6 @@ export default class Api {
     return parsedResponse;
   }
 
-  // addPoint(point) {
-  //   return this.#load({
-  //     url: 'points',
-  //     method: Method.POST,
-  //     body: JSON.stringify(PointsModel.adaptPointsToServer(point)),
-  //     headers: new Headers({'Content-Type': 'application/json'}),
-  //   })
-  //     .then(Api.parseResponse)
-  //     .then(PointsModel.adaptPointsToClient);
-  // }
-
   deletePoint = async (point) => {
     const response = await this.#load({
       url: `points/${point.id}`,
@@ -84,15 +68,6 @@ export default class Api {
 
     return response;
   }
-
-
-  // deletePoint(point) {
-  //   return this.#load({
-  //     url: `points/${point.id}`,
-  //     method: Method.DELETE,
-  //   });
-  // }
-
 
   #load = async ({url, method = Method.GET, body = null, headers = new Headers()}) => {
     headers.append('Authorization', this.#authorization);
@@ -106,9 +81,6 @@ export default class Api {
       Api.catchError(err);
     }
 
-    // return fetch(`${this.#endPoint}/${url}`, {method, body, headers})
-    //   .then(Api.checkStatus)
-    //   .catch(Api.catchError);
   }
 
   #adaptPointsToServer = (point) => {
@@ -130,12 +102,6 @@ export default class Api {
 
     return adaptedPoint;
   }
-
-  // static checkStatus = (response) => {
-  //   if (!response.ok) {
-  //     throw new Error(`${response.status}: ${response.statusText}`);
-  //   }
-  // }
 
   static checkStatus = (response) => {
     if (

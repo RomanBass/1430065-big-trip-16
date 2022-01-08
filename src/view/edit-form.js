@@ -388,19 +388,22 @@ export default class EditForm extends SmartView {
     this.setEditFormSubmitButtonClickHandler(this._callback.editFormSubmitButtonClick);
   }
 
-  #setInnerHandlers = () => { //вешает "внутренние" обработчики на форму редактирования
+  #setInnerHandlers = () => { //добавляет "внутренние" обработчики на форму редактирования
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#typeFieldsetChangeHandler);
-    //...вешает обработчик на fieldset выбора типа точки
+    //...добавляет обработчик на fieldset выбора типа точки
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#destinationInputChangeHandler);
-    //...вешает обработчик на input ввода названия города
+    //...добавляет обработчик на input ввода названия города
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#basePriceInputChangeHandler);
-    //..вешает обработчик на input ввода цены
+    //..добавляет обработчик на input ввода цены
     this.element.querySelector('.event__available-offers')
       .addEventListener('change', this.#offersChangeHandler);
-    //..вешает обработчик на опции
+    //..добавляет обработчик на опции
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#deletePointClickHandler);
+    //..добавляет обработчик на кнопку удаления
   }
 
   #setDateFromPicker = () => { // устанавливает окно ввода даты старта

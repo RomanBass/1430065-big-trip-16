@@ -1,7 +1,7 @@
 import Observer from '../utils/observer.js';
 import dayjs from 'dayjs';
-import { UpdateType } from '../utils/const.js';
-
+import { UpdateType, BlankPossibleOffers } from '../utils/const.js';
+import { getDestinationsFromPoints } from '../utils/route.js';
 
 export default class Points extends Observer {
   #points = [];
@@ -24,15 +24,29 @@ export default class Points extends Observer {
   }
 
   init = async () => {
-    const points = await this.#apiService.points;
-    const offers = await this.#apiService.offers;
-    const destinations = await this.#apiService.destinations;
+    try {
+      const points = await this.#apiService.points;
+      this.#points = points.map(this.#adaptPointsToClient);
+    } catch(err) {
+      this.#points = [];
+      console.log('catch_points_err');
+    }
 
-    this.#points = points.map(this.#adaptPointsToClient);
+    try {
+      const offers = await this.#apiService.offers;
+      this.#offers = this.#adaptOffersToClient(offers);
+    } catch(err){
+      this.#offers = BlankPossibleOffers;
+      console.log('catch_offers_err');
+    }
 
-    this.#offers = offers;
-    this.#offers = this.#adaptOffersToClient(offers);
-    this.#destinations = destinations;
+    try {
+      const destinations = await this.#apiService.destinations;
+      this.#destinations = destinations;
+    } catch {
+      this.#destinations = getDestinationsFromPoints(this.points);
+      console.log('catch_destinations_err');
+    }
 
     this._notify(UpdateType.INIT);
   }

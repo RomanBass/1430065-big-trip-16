@@ -14,9 +14,8 @@ import { getMoneyByTypeData, getPointsNumberByTypeData, getDurationByTypeData}
 import ApiService from './api.js';
 import { getDestinationsFromPoints } from './utils/route.js';
 
-const AUTHORIZATION = 'Basic df9df9df8sd8fg8u';
+const AUTHORIZATION = 'Basic df9df9df8sd8fg8s';
 const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
-const PROMISE_STATUS_FULFILLED = 'fulfilled';
 
 const siteHeaderElement = document.querySelector('.page-header'); // крупный блок
 const menuElement = siteHeaderElement.querySelector('.trip-controls__navigation'); // контейнеры...
@@ -34,7 +33,7 @@ const filterModel = new FilterModel();
 const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
 const siteMenuComponent = new SiteMenuView();
 
-render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовки компонентов...
+//render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовки компонентов...
 
 const tripInfo = new InfoAndPriceView(
   getRoutePrice(pointsModel.points),
@@ -81,7 +80,7 @@ const handleSiteMenuClick = (menuOptionName) => {
 
 };
 
-siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
+//siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 tripPresenter.init();
 filterPresenter.init();
@@ -98,7 +97,7 @@ pointsModel.addObserver(() => {
   }
 });
 
-//newPointAddButton.disabled = true; //отключает кнопку на время загрузки данных
+newPointAddButton.disabled = true; //блокировка кнопки добавления точки на время загрузки данных
 
 newPointAddButton.addEventListener('click', (evt) => { //нажатие кнопки добавления точки
   evt.preventDefault();
@@ -142,4 +141,8 @@ newPointAddButton.addEventListener('click', (evt) => { //нажатие кноп
 
 //   });
 
-pointsModel.init();
+pointsModel.init().finally(() => {
+  render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовка меню Table Stats
+  siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
+  newPointAddButton.disabled = false; //включает кнопку добавления точек после загрузки данных
+});

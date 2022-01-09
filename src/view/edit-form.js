@@ -453,4 +453,9 @@ export default class EditForm extends SmartView {
       dateTo: dayjs(userDate),
     });
   }
+
+  reset = (point) => {
+    //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
+    this.updateData(point);
+  }
 }

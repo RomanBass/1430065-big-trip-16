@@ -110,34 +110,28 @@ export default class Trip {
       .forEach((presenter) => presenter.resetView());
   }
 
-  #handleViewAction = (actionType, updateType, update) => { //обрабатывает как отражается на модели действие на представлении
+  #handleViewAction = async (actionType, updateType, update) => { //обрабатывает как отражается на модели действие на представлении
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#api.updatePoint(update)
-          .then((response) => {
-            this.#pointsModel.updatePoint(updateType, response);
-          })
-          .catch(() => {
-            this.#pointPresenters[update.id].abortingFormSubmit();
-          });
+        try {
+          await this.#pointsModel.updatePoint(updateType, update);
+        } catch(err) {
+          this.#pointPresenters[update.id].abortingFormSubmit();
+        }
         break;
       case UserAction.ADD_POINT:
-        this.#api.addPoint(update)
-          .then((response) => {
-            this.#pointsModel.addPoint(updateType, response);
-          })
-          .catch(() => {
-            this.#pointNewPresenter.abortingPointAdding();
-          });
+        try {
+          await this.#pointsModel.addPoint(updateType, update);
+        } catch {
+          this.#pointNewPresenter.abortingPointAdding();
+        }
         break;
       case UserAction.DELETE_POINT:
-        this.#api.deletePoint(update)
-          .then(() => {
-            this.#pointsModel.deletePoint(updateType, update);
-          })
-          .catch(() => {
-            this.#pointPresenters[update.id].abortingPointDelete();
-          });
+        try {
+          await this.#pointsModel.deletePoint(updateType, update);
+        } catch {
+          this.#pointPresenters[update.id].abortingPointDelete();
+        }
         break;
     }
   }

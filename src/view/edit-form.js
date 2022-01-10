@@ -10,11 +10,11 @@ const createDataListTemplate = (cityName) => `<option value="${cityName}"></opti
 //...возвращает образец ДОМ элемента в datalist наименований городов
 
 const createOptionTemplate = (offer, isChecked) => { //возвращает образец ДОМ элемента опции
-  const {title, price} = offer;
+  const {id, title, price} = offer;
   return `<div class="event__offer-selector">
-  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${title}" type="checkbox"
+  <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox"
   name="event-offer-${title}" ${isChecked}>
-  <label class="event__offer-label" for="event-offer-${title}">
+  <label class="event__offer-label" for="${id}">
     <span class="event__offer-title">${title}</span>
     &plus;&euro;&nbsp;
     <span class="event__offer-price">${price}</span>
@@ -357,6 +357,9 @@ export default class EditForm extends SmartView {
     const clickedOptionTitle = evt.target.parentElement.querySelector('label span:first-child')
       .textContent; //достаёт из разметки наименование кликУемой опции
 
+    const clickedOptionId = evt.target.parentElement.querySelector('input').id;
+    //...достаёт из разметки ID-шник кликУемой опции
+
     const isClickedOption = this._data.offers.some((option) => option.title === clickedOptionTitle);
     //...флаг проверки наличия кликнутой опции в массиве опций данной точки
 
@@ -367,7 +370,7 @@ export default class EditForm extends SmartView {
       const clickedOptionPrice = evt.target.parentElement.querySelector('label span:last-child')
         .textContent; //достаёт из раметки цену кликуемой опции
 
-      const ClickedOption = {title: clickedOptionTitle,
+      const ClickedOption = {id: parseInt(clickedOptionId, RADIX_10), title: clickedOptionTitle,
         price: parseInt(clickedOptionPrice, RADIX_10)}; //создаёт объект кликнутой опции
 
       this._data.offers.unshift(ClickedOption);
@@ -385,19 +388,22 @@ export default class EditForm extends SmartView {
     this.setEditFormSubmitButtonClickHandler(this._callback.editFormSubmitButtonClick);
   }
 
-  #setInnerHandlers = () => { //вешает "внутренние" обработчики на форму редактирования
+  #setInnerHandlers = () => { //добавляет "внутренние" обработчики на форму редактирования
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#typeFieldsetChangeHandler);
-    //...вешает обработчик на fieldset выбора типа точки
+    //...добавляет обработчик на fieldset выбора типа точки
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#destinationInputChangeHandler);
-    //...вешает обработчик на input ввода названия города
+    //...добавляет обработчик на input ввода названия города
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#basePriceInputChangeHandler);
-    //..вешает обработчик на input ввода цены
+    //..добавляет обработчик на input ввода цены
     this.element.querySelector('.event__available-offers')
       .addEventListener('change', this.#offersChangeHandler);
-    //..вешает обработчик на опции
+    //..добавляет обработчик на опции
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#deletePointClickHandler);
+    //..добавляет обработчик на кнопку удаления
   }
 
   #setDateFromPicker = () => { // устанавливает окно ввода даты старта
@@ -446,5 +452,10 @@ export default class EditForm extends SmartView {
     this.updateData({
       dateTo: dayjs(userDate),
     });
+  }
+
+  reset = (point) => {
+    //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
+    this.updateData(point);
   }
 }

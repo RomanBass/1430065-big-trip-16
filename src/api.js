@@ -1,5 +1,3 @@
-import PointsModel from './model/points.js';
-
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
@@ -13,68 +11,99 @@ const SuccessHTTPStatusRange = {
 };
 
 export default class Api {
+  #endPoint = null;
+  #authorization = null;
+
   constructor(endPoint, authorization) {
-    this._endPoint = endPoint;
-    this._authorization = authorization;
+    this.#endPoint = endPoint;
+    this.#authorization = authorization;
   }
 
-  getPoints() {
-    return this._load({url: 'points'})
-      .then(Api.toJSON)
-      .then((points) => points.map(PointsModel.adaptPointsToClient));
+  get points() {
+    return this.#load({url: 'points'})
+      .then(Api.parseResponse);
   }
 
-  getOffers() {
-    return this._load({url: 'offers'})
-      .then(Api.toJSON)
-      .then((offers) => PointsModel.adaptOffersToClient(offers));
+  get offers() {
+    return this.#load({url: 'offers'})
+      .then(Api.parseResponse);
   }
 
-  getDestinations() {
-    return this._load({url: 'destinations'})
-      .then(Api.toJSON)
-      .then((destinations) => destinations);
+  get destinations() {
+    return this.#load({url: 'destinations'})
+      .then(Api.parseResponse);
   }
 
-  updatePoint(point) {
-    return this._load({
+  updatePoint = async (point) => {
+    const response = await this.#load({
       url: `points/${point.id}`,
       method: Method.PUT,
-      body: JSON.stringify(PointsModel.adaptPointsToServer(point)),
+      body: JSON.stringify(this.#adaptPointsToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
-    })
-      .then(Api.toJSON)
-      .then(PointsModel.adaptPointsToClient);
+    });
+
+    const parsedResponse = await Api.parseResponse(response);
+
+    return parsedResponse;
   }
 
-  addPoint(point) {
-    return this._load({
+  addPoint = async (point) => {
+    const response = await this.#load({
       url: 'points',
       method: Method.POST,
-      body: JSON.stringify(PointsModel.adaptPointsToServer(point)),
+      body: JSON.stringify(this.#adaptPointsToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
-    })
-      .then(Api.toJSON)
-      .then(PointsModel.adaptPointsToClient);
+    });
+
+    const parsedResponse = await Api.parseResponse(response);
+
+    return parsedResponse;
   }
 
-  deletePoint(point) {
-    return this._load({
+  deletePoint = async (point) => {
+    const response = await this.#load({
       url: `points/${point.id}`,
       method: Method.DELETE,
     });
+
+    return response;
   }
 
+  #load = async ({url, method = Method.GET, body = null, headers = new Headers()}) => {
+    headers.append('Authorization', this.#authorization);
 
-  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
-    headers.append('Authorization', this._authorization);
+    const response = await fetch(`${this.#endPoint}/${url}`, {method, body, headers});
 
-    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
-      .then(Api.checkStatus)
-      .catch(Api.catchError);
+    try {
+      Api.checkStatus(response);
+      return response;
+    } catch (err) {
+      Api.catchError(err);
+    }
+
   }
 
-  static checkStatus(response) {
+  #adaptPointsToServer = (point) => {
+    const adaptedPoint = Object.assign(
+      {},
+      point,
+      {
+        'base_price': point.basePrice,
+        'date_from': point.dateFrom.toISOString(),
+        'date_to': point.dateTo.toISOString(),
+        'is_favorite': point.isFavorite,
+      },
+    );
+
+    delete adaptedPoint.basePrice;
+    delete adaptedPoint.dateFrom;
+    delete adaptedPoint.dateTo;
+    delete adaptedPoint.isFavorite;
+
+    return adaptedPoint;
+  }
+
+  static checkStatus = (response) => {
     if (
       response.status < SuccessHTTPStatusRange.MIN ||
       response.status > SuccessHTTPStatusRange.MAX
@@ -85,11 +114,9 @@ export default class Api {
     return response;
   }
 
-  static toJSON(response) {
-    return response.json();
-  }
+  static parseResponse = (response) => response.json();
 
-  static catchError(err) {
+  static catchError = (err) => {
     throw err;
   }
 }

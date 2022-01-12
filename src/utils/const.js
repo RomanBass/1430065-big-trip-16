@@ -79,3 +79,15 @@ export const blankPossibleDestinations = [{
   description: 'London is the capital of the UK',
   pictures: {src: '', description: ''},
 }];
+
+export const TripType = {
+  TAXI: 'taxi',
+  BUS: 'bus',
+  TRAIN: 'train',
+  SHIP: 'ship',
+  DRIVE: 'drive',
+  FLIGHT: 'flight',
+  'CHECK-IN': 'check-in',
+  SIGHTSEEING: 'sightseeing',
+  RESTAURANT: 'restaurant',
+};

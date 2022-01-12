@@ -134,11 +134,6 @@ const createEditFormTemplate = (
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-transport-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="transport">
-              <label class="event__type-label  event__type-label--transport" for="event-type-transport-1">Transport</label>
-            </div>
-
-            <div class="event__type-item">
               <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
               <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
             </div>

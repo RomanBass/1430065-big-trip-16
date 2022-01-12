@@ -81,8 +81,7 @@ export default class Point {
 
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
-      this.#editFormComponent.reset(this.#point);
-      //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
+      this.#editFormComponent.reset(this.#point); //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
       this.#replaceEditFormToPoint();
     }
   }
@@ -90,8 +89,7 @@ export default class Point {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      this.#editFormComponent.reset(this.#point);
-      //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
+      this.#editFormComponent.reset(this.#point); //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
       this.#replaceEditFormToPoint();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
@@ -102,6 +100,7 @@ export default class Point {
   }
 
   #handleEditFormToPointClick = () => { // клик по стрелке закрывает форму редактирования и открывает точку маршрута
+    this.#editFormComponent.reset(this.#point); //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
     this.#replaceEditFormToPoint();
   }
 

@@ -109,4 +109,4 @@ pointsModel.init().finally(() => {
   render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовка меню Table Stats
   siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
   newPointAddButton.disabled = false; //включает кнопку добавления точек после загрузки данных
-}); //
+});

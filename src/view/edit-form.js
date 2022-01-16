@@ -84,21 +84,21 @@ const createEditFormTemplate = (
     isDestinationInfo = 'visually-hidden';
   }
 
-  const isEditForm = {
+  const IsEditForm = {
     //...переменная для определения названия кнопки ресет и нужна ли стрелка закрытия формы
     ROLLUP_BUTTON_CLASS: 'event__rollup-btn',
     RESET_BUTTON_NAME: 'Delete',
-    ADD_FORM_CLASS: '',
+    RESET_BUTTON_CLASS: 'event__reset-btn--editing',
   };
 
   if (point.id === BlankPoint.id) {
-    //...удаляет стрелку и переименовывает кнопку ресет, если это форма добавления
-    isEditForm.ROLLUP_BUTTON_CLASS = 'visually-hidden';
-    isEditForm.RESET_BUTTON_NAME = 'Cancel';
-    isEditForm.ADD_FORM_CLASS = '';
+    //...если эта форма добавления, то...
+    IsEditForm.ROLLUP_BUTTON_CLASS = 'visually-hidden'; //удаляет стрелку
+    IsEditForm.RESET_BUTTON_NAME = 'Cancel'; //переименовывает кнопку ресет
+    IsEditForm.RESET_BUTTON_CLASS = 'event__reset-btn--adding'; //изменяет класс с модификатором
   }
 
-  return `<li class="trip-events__item ${isEditForm.ADD_FORM_CLASS}">
+  return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -186,8 +186,8 @@ const createEditFormTemplate = (
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">${isEditForm.RESET_BUTTON_NAME}</button>
-      <button class="${isEditForm.ROLLUP_BUTTON_CLASS}" type="button">
+      <button class="event__reset-btn ${IsEditForm.RESET_BUTTON_CLASS}" type="reset">${IsEditForm.RESET_BUTTON_NAME}</button>
+      <button class="${IsEditForm.ROLLUP_BUTTON_CLASS}" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
     </header>
@@ -396,9 +396,17 @@ export default class EditForm extends SmartView {
     this.element.querySelector('.event__available-offers')
       .addEventListener('change', this.#offersChangeHandler);
     //..добавляет обработчик на опции
-    this.element.querySelector('.event__reset-btn')
-      .addEventListener('click', this.#deletePointClickHandler);
-    //..добавляет обработчик на кнопку удаления
+
+    const resetButton = this.element.querySelector('.event__reset-btn');
+    //..находит кнопку удаления для формы редактирования или кнопку отмены для формы добавления
+
+    if (resetButton.classList.contains('event__reset-btn--editing')) {
+      //..проверяет, эта кнопка - удаления или отмены и добавляет соответствующий обработчик
+      resetButton.addEventListener('click', this.#deletePointClickHandler);
+    } else {
+      resetButton.addEventListener('click', this.#addFormCancelHandler);
+    }
+
   }
 
   #setDateFromPicker = () => { // устанавливает окно ввода даты старта

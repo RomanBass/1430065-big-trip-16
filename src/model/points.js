@@ -1,4 +1,4 @@
-import Observer from '../utils/observer.js';
+import Observer from './observer.js';
 import dayjs from 'dayjs';
 import { UpdateType, BlankPossibleOffers } from '../utils/const.js';
 import { getDestinationsFromPoints } from '../utils/route.js';

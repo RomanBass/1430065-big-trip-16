@@ -8,6 +8,7 @@ export default class Points extends Observer {
   #offers = {};
   #destinations = [];
   #apiService = null;
+  #downloadOkFlag = true;
 
   constructor(apiService) {
     super();
@@ -20,6 +21,7 @@ export default class Points extends Observer {
       this.#points = points.map(this.#adaptPointsToClient);
     } catch(err) {
       this.#points = [];
+      this.#downloadOkFlag = false;
     }
 
     try {
@@ -37,6 +39,10 @@ export default class Points extends Observer {
     }
 
     this._notify(UpdateType.INIT);
+  }
+
+  get downloadOkFlag () {
+    return this.#downloadOkFlag;
   }
 
   get points() {

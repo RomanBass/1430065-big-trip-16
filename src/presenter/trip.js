@@ -9,6 +9,7 @@ import { filter } from '../utils/filter.js';
 import PointNewPresenter from './point-new.js';
 import { BlankPoint } from '../utils/const.js';
 import LoadingView from '../view/loading.js';
+import ServerAnavailable from '../view/server-unavailable.js';
 
 export default class Trip {
   #pointsModel = null;
@@ -24,6 +25,7 @@ export default class Trip {
   #api = null;
   #loadingComponent = new LoadingView();
   #pointNewPresenter = null;
+  #serverUnavailableComponent = new ServerAnavailable();
 
   constructor(tripContainer, pointsModel, filterModel, api) {
     this.#pointsModel = pointsModel;
@@ -164,7 +166,14 @@ export default class Trip {
         remove(this.#loadingComponent);
 
         if (!this.points.length) {
-          this.#renderNoPoint();
+
+          if (!this.#pointsModel.downloadOkFlag) { //если данные о точках не пришли с сервера вообще, то выдаётся сообщение...
+            this.#renderServerUnavailable();//...что сервер не доступен
+            //console.log('No Points Today');
+          } else {
+            this.#renderNoPoint(); // рендерится сообщение, кликнуть NEW для создания новой точки
+          }
+
         } else {
           this.#currentSortType = SortType.BY_DATE_FROM;
           this.#renderSort();
@@ -192,6 +201,10 @@ export default class Trip {
       render(this.#tripContainer, this.#noPointComponent, RenderPosition.BEFOREEND);
     }
 
+  }
+
+  #renderServerUnavailable = () => {//отрисовка сообщения, что сервер недоступен
+    render(this.#tripContainer, this.#serverUnavailableComponent, RenderPosition.BEFOREEND);
   }
 
   #renderSort = () => {

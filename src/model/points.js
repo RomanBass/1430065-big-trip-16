@@ -8,7 +8,7 @@ export default class Points extends Observer {
   #offers = {};
   #destinations = [];
   #apiService = null;
-  #downloadOkFlag = true;
+  #downloadOkFlag = true;//
 
   constructor(apiService) {
     super();

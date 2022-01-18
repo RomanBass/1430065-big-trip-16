@@ -22,16 +22,14 @@ export default class Trip {
   #currentSortType = SortType.BY_DATE_FROM;
   #filterType = FilterType.EVERYTHING;
   #isLoading = true;
-  #api = null;
   #loadingComponent = new LoadingView();
   #pointNewPresenter = null;
   #serverUnavailableComponent = new ServerAnavailable();
 
-  constructor(tripContainer, pointsModel, filterModel, api) {
+  constructor(tripContainer, pointsModel, filterModel) {
     this.#pointsModel = pointsModel;
     this.#filtersModel = filterModel;
     this.#tripContainer = tripContainer;
-    this.#api = api;
 
     this.#pointNewPresenter = new PointNewPresenter(
       this.#eventsListComponent, this.#handleViewAction,

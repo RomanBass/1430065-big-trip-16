@@ -25,7 +25,6 @@ const tripEventsElement = document.querySelector('.trip-events');
 const newPointAddButton = siteHeaderElement.querySelector('.trip-main__event-add-btn');
 //...кнопка добавления точки
 
-const api = new ApiService(END_POINT, AUTHORIZATION);
 const filterModel = new FilterModel();
 const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
 const siteMenuComponent = new SiteMenuView();
@@ -46,7 +45,7 @@ pointsModel.addObserver(() => {
   );
 });
 
-const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel, api);
+const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
 const filterPresenter = new FilterPresenter(filtersElement, filterModel, pointsModel);
 
 let statisticsComponent = null;

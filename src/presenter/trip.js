@@ -165,13 +165,12 @@ export default class Trip {
         this.#isLoading = false;
         remove(this.#loadingComponent);
 
-        if (!this.points.length) {
+        if (!this.points.length) { //если в модели массив точек пустой, то...
 
-          if (!this.#pointsModel.downloadOkFlag) { //если данные о точках не пришли с сервера вообще, то выдаётся сообщение...
+          if (!this.#pointsModel.downloadOkFlag) { //если данные о точках не пришли с сервера вообще, то выдаётся сообщение,...
             this.#renderServerUnavailable();//...что сервер не доступен
-            //console.log('No Points Today');
-          } else {
-            this.#renderNoPoint(); // рендерится сообщение, кликнуть NEW для создания новой точки
+          } else {//если данные пришли с сервера корректно, но они пустые, то...
+            this.#renderNoPoint(); //...рендерится сообщение - кликнуть NEW для создания новой точки
           }
 
         } else {

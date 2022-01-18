@@ -1,7 +1,7 @@
 import AbstractView from './abstract.js';
 
 const createServerAnavailableTemplate = () => (
-  '<p class="trip-events__msg" style="color: #078ff0;">Remote Server Unavailable</p>'
+  '<p class="trip-events__msg" style="color: #ff0000;">Remote server is not available!</p>'
 );
 
 export default class serverUnavailable extends AbstractView {

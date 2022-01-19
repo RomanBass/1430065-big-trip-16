@@ -143,6 +143,7 @@ export default class Trip {
         break;
       case UpdateType.MINOR: //обновление списка точек
         this.#clearPointsList();
+        remove(this.#noPointComponent); //удаление сообщения об отсутствии точек
         this.#renderPoints();
         break;
       case UpdateType.MAJOR: //обновление списка точек + перерисовка элемента фильтров

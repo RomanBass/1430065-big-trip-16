@@ -36,7 +36,7 @@ export default class PointNew {
   #handleEditFormSubmit = (point) => {
     this.#changeData(
       UserAction.ADD_POINT,
-      UpdateType.MAJOR,
+      UpdateType.MINOR,
       point,
     );
   }

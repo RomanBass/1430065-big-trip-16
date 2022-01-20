@@ -96,8 +96,6 @@ newPointAddButton.addEventListener('click', (evt) => { //нажатие кноп
   remove(statisticsComponent);
   tripPresenter.destroy();
   tripPresenter.init();
-  filterPresenter.destroy();
-  filterPresenter.init();
   remove(siteMenuComponent); // удаление меню
   render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовка меню
   siteMenuComponent.setMenuClickHandler(handleSiteMenuClick); // установка обработчиков

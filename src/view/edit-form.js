@@ -45,7 +45,7 @@ const createEditFormTemplate = (
 
   const getOptionsTemplate = (possibleOffersCollection) =>  {
     //...возвращает ДОМ элемент возможных опции для точки типа type
-    let OptionsTemplate = '';
+    let optionsTemplate = '';
     possibleOffersCollection[type].forEach((option) => {
 
       let isChecked = ''; // флаг - чекнуто ли offer
@@ -58,17 +58,17 @@ const createEditFormTemplate = (
         checkedOffer.price = option.price; // чтобы передать цену в опции BlankPoint
       }
 
-      OptionsTemplate += createOptionTemplate(option, isChecked);
+      optionsTemplate += createOptionTemplate(option, isChecked);
     });
-    return OptionsTemplate;
+    return optionsTemplate;
   };
 
   const getPhotosTemplate = (photosCollection) => { //возвращает дом элемент с фотографиями
-    let PhotoTemplate = '';
+    let photoTemplate = '';
     photosCollection.forEach((picture) => {
-      PhotoTemplate += createPhotoTemplate(picture);
+      photoTemplate += createPhotoTemplate(picture);
     });
-    return PhotoTemplate;
+    return photoTemplate;
   };
 
   let isPicture = '';
@@ -323,16 +323,16 @@ export default class EditForm extends SmartView {
 
   #destinationInputChangeHandler = (evt) => { //обработчик input ввода названия города
 
-    const NewDestination =
+    const newDestination =
     this.#possibleDestinations.find((destination) => destination.name === evt.target.value);
     //...находит в datalist введёный город и присваивает данной константе
 
-    if (NewDestination) { // Если введёный город есть в datalist, то производит изменение.
+    if (newDestination) { // Если введёный город есть в datalist, то производит изменение.
       this.updateData({  // Иначе - выдаёт сообщение setCustomValidity
         destination: {
-          description: NewDestination.description,
-          name: NewDestination.name,
-          pictures: NewDestination.pictures,
+          description: newDestination.description,
+          name: newDestination.name,
+          pictures: newDestination.pictures,
         },
       });
     } else {
@@ -365,10 +365,10 @@ export default class EditForm extends SmartView {
       const clickedOptionPrice = evt.target.parentElement.querySelector('label span:last-child')
         .textContent; //достаёт из раметки цену кликуемой опции
 
-      const ClickedOption = {id: parseInt(clickedOptionId, RADIX_10), title: clickedOptionTitle,
+      const clickedOption = {id: parseInt(clickedOptionId, RADIX_10), title: clickedOptionTitle,
         price: parseInt(clickedOptionPrice, RADIX_10)}; //создаёт объект кликнутой опции
 
-      this._data.offers.unshift(ClickedOption);
+      this._data.offers.unshift(clickedOption);
       //...добавляет объект кликнутой опции в массив опций данной точки
     }
 

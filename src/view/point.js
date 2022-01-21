@@ -19,16 +19,16 @@ const createPointTemplate = (point, possibleOffers) => {
 
   const getChosenOptionsTemplate = (offersCollection) =>  { /*возвращает ДОМ элемент возможных
 опции для точки типа type*/
-    let ChosenOptionsTemplate = '';
+    let chosenOptionsTemplate = '';
 
     if (possibleOffers[type].length) {
       offersCollection.forEach((offer) => {
-        ChosenOptionsTemplate += createChosenOptionTemplate(offer);
+        chosenOptionsTemplate += createChosenOptionTemplate(offer);
 
       });
     }
 
-    return ChosenOptionsTemplate;
+    return chosenOptionsTemplate;
   };
 
   return `<li class="trip-events__item">

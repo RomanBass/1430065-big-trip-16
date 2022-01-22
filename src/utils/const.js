@@ -22,7 +22,7 @@ export const BLANK_POSSIBLE_OFFERS = {
 const ADD_FORM_DATA = { // данные для дефолтной точки
   BASE_PRICE: 100,
   TRIP_DURATION: 3,
-  DESTINATION: {description: 'The nicest city of the world', name: 'New City', pictures: []},
+  DESTINATION: {description: '', name: '', pictures: []},
   IS_FAVORITE: false,
   OFFERS: [],
   TYPE: 'taxi',

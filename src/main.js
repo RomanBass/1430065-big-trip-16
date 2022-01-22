@@ -100,7 +100,6 @@ newPointAddButton.addEventListener('click', (evt) => { //нажатие кноп
   render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовка меню
   siteMenuComponent.setMenuClickHandler(handleSiteMenuClick); // установка обработчиков
   tripPresenter.createPoint();
-  newPointAddButton.disabled = true;
 });
 
 pointsModel.init().finally(() => {

@@ -19,7 +19,7 @@ export const BLANK_POSSIBLE_OFFERS = {
   train: [],
 };
 
-export const AddFormData = { // данные для дефолтной точки
+const ADD_FORM_DATA = { // данные для дефолтной точки
   BASE_PRICE: 100,
   TRIP_DURATION: 3,
   DESTINATION: {description: 'The nicest city of the world', name: 'New City', pictures: []},
@@ -29,13 +29,13 @@ export const AddFormData = { // данные для дефолтной точк�
 };
 
 export const BlankPoint = { // дефолтная точка для формы добавления
-  basePrice: AddFormData.BASE_PRICE,
+  basePrice: ADD_FORM_DATA.BASE_PRICE,
   dateFrom: dayjs(),
-  dateTo: dayjs().add(AddFormData.TRIP_DURATION, 'day'),
-  destination: AddFormData.DESTINATION,
-  isFavorite: AddFormData.IS_FAVORITE,
-  offers: AddFormData.OFFERS,
-  type: AddFormData.TYPE,
+  dateTo: dayjs().add(ADD_FORM_DATA.TRIP_DURATION, 'day'),
+  destination: ADD_FORM_DATA.DESTINATION,
+  isFavorite: ADD_FORM_DATA.IS_FAVORITE,
+  offers: ADD_FORM_DATA.OFFERS,
+  type: ADD_FORM_DATA.TYPE,
 };
 
 export const SortType = {

@@ -1,5 +1,5 @@
 import SiteMenuView from './view/site-menu.js';
-import InfoAndPriceView from './view/info-price.js';
+import TripInfoView from './view/trip-info.js';
 import { getRouteDates, getRoutePrice, getRouteName } from './utils/route.js';
 import {remove, render, RenderPosition} from './utils/render.js';
 import TripPresenter from './presenter/trip.js';
@@ -29,7 +29,7 @@ const filterModel = new FilterModel();
 const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
 const siteMenuComponent = new SiteMenuView();
 
-const tripInfo = new InfoAndPriceView(
+const tripInfo = new TripInfoView(
   getRoutePrice(pointsModel.points),
   getRouteDates(pointsModel.points),
   getRouteName(pointsModel.points));

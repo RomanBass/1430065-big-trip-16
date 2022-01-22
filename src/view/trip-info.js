@@ -1,6 +1,6 @@
 import SmartView from './smart.js';
 
-const createInfoAndPriceTemplate = (price, date, name) => (
+const createTripInfoTemplate = (price, date, name) => (
   `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
     <h1 class="trip-info__title">${name}</h1>
@@ -12,7 +12,7 @@ const createInfoAndPriceTemplate = (price, date, name) => (
 </section>`
 );
 
-export default class InfoAndPrice extends SmartView {
+export default class TripInfo extends SmartView {
   constructor(price, date, name) {
     super();
 
@@ -20,7 +20,7 @@ export default class InfoAndPrice extends SmartView {
   }
 
   get template() {
-    return createInfoAndPriceTemplate(this._data.tripPrice, this._data.tripDate, this._data.tripName);
+    return createTripInfoTemplate(this._data.tripPrice, this._data.tripDate, this._data.tripName);
   }
 
   restoreHandlers = () => {

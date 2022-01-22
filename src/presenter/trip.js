@@ -9,7 +9,7 @@ import { filter } from '../utils/filter.js';
 import PointNewPresenter from './point-new.js';
 import { BlankPoint } from '../utils/const.js';
 import LoadingView from '../view/loading.js';
-import ServerAnavailable from '../view/server-unavailable.js';
+import ServerAnavailableMessage from '../view/server-unavailable.js';
 
 export default class Trip {
   #pointsModel = null;
@@ -24,7 +24,7 @@ export default class Trip {
   #isLoading = true;
   #loadingComponent = new LoadingView();
   #pointNewPresenter = null;
-  #serverUnavailableComponent = new ServerAnavailable();
+  #serverUnavailableComponent = new ServerAnavailableMessage();
 
   constructor(tripContainer, pointsModel, filterModel) {
     this.#pointsModel = pointsModel;

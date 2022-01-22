@@ -7,7 +7,7 @@ export const ARRAY_INDEX_TWO = 2;
 export const TYPES = ['taxi', 'bus', 'train', 'ship', 'transport', 'drive', 'flight',
   'check-in', 'sightseeing', 'restaurant'];
 
-export const BlankPossibleOffers = {
+export const BLANK_POSSIBLE_OFFERS = {
   bus: [],
   'check-in': [],
   drive: [],

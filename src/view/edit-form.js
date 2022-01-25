@@ -3,6 +3,7 @@ import SmartView from './smart.js';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import dayjs from 'dayjs';
+import he from 'he';
 
 const RADIX_10 = 10; // основание десятичной системы исчисления
 
@@ -165,7 +166,7 @@ const createEditFormTemplate = (
         <label class="event__label  event__type-output" for="event-destination-1">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(name)}" list="destination-list-1">
         <datalist id="destination-list-1">${getDatalistContentTemplate(possibleDestinations)}</datalist>
       </div>
 
@@ -182,7 +183,7 @@ const createEditFormTemplate = (
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${basePrice}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(basePrice.toString())}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -328,14 +329,14 @@ export default class EditForm extends SmartView {
     //...находит в datalist введёный город и присваивает данной константе
 
     if (newDestination) { // Если введёный город есть в datalist, то производит изменение.
-      this.updateData({  // Иначе - выдаёт сообщение setCustomValidity
+      this.updateData({
         destination: {
           description: newDestination.description,
           name: newDestination.name,
           pictures: newDestination.pictures,
         },
       });
-    } else {
+    } else { // Иначе - выдаёт сообщение setCustomValidity
       this.element.querySelector('.event__input--destination')
         .setCustomValidity('This city is not available, please select one from the popup list.');
       this.element.querySelector('.event__input--destination').reportValidity();

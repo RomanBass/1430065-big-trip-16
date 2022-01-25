@@ -24,7 +24,7 @@ export default class Abstract {
     return this.#element;
   }
 
-  removeElement = () => {
+  removeElement () {
     this.#element = null;
   }
 

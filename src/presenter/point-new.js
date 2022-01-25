@@ -7,9 +7,10 @@ export default class PointNew {
   #editFormComponent = null;
   #changeData = null;
 
-  constructor(eventListContainer, changeData) {
+  constructor(eventListContainer, changeData, cb) {
     this.#eventListContainer = eventListContainer;
     this.#changeData = changeData;
+    this.cb = cb;
   }
 
   init = (point, offers, destinations) => {
@@ -39,10 +40,12 @@ export default class PointNew {
       UpdateType.MINOR,
       point,
     );
+    this.cb();
   }
 
   #handleAddFormCancel = () => { // обработчик на кнопку Cancel для удаления формы добавления
     this.destroy();
+    this.cb();
   }
 
   #escKeyDownHandler = (evt) => {

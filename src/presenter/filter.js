@@ -21,13 +21,13 @@ export default class Filter {
   init = () => {
     const prevFilterComponent = this.#filterComponent;
 
-    const AreFiltersAvailable = { // зависит от наличия точек при данном фильтре, используется для блокировки фильтров
+    const filtersStatus = { // зависит от наличия точек при данном фильтре, используется для блокировки фильтров
       EVERYTHING: (this.#pointsModel.points).length > null,
       FUTURE: !!this.#pointsModel.points.find((point) => point.dateTo > dayjs()),
       PAST: !!this.#pointsModel.points.find((point) => point.dateFrom < dayjs()),
     };
 
-    this.#filterComponent = new FilterView(this.#filtersModel.filter, AreFiltersAvailable);
+    this.#filterComponent = new FilterView(this.#filtersModel.filter, filtersStatus);
     this.#filterComponent.setFilterTypeChangeHandler(this.#handleFilterTypeChange);
 
     if (prevFilterComponent === null) {

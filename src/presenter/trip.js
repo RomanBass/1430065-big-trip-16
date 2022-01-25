@@ -26,13 +26,13 @@ export default class Trip {
   #pointNewPresenter = null;
   #serverUnavailableComponent = new ServerAnavailableMessage();
 
-  constructor(tripContainer, pointsModel, filterModel) {
+  constructor(tripContainer, pointsModel, filterModel, cb) {
     this.#pointsModel = pointsModel;
     this.#filtersModel = filterModel;
     this.#tripContainer = tripContainer;
 
     this.#pointNewPresenter = new PointNewPresenter(
-      this.#eventsListComponent, this.#handleViewAction,
+      this.#eventsListComponent, this.#handleViewAction, cb
     );
 
   }

@@ -45,7 +45,15 @@ pointsModel.addObserver(() => {
   );
 });
 
-const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
+const tripPresenter = new TripPresenter(
+  tripEventsElement,
+  pointsModel,
+  filterModel,
+  () => {
+    newPointAddButton.disabled = false;
+  }
+);
+
 const filterPresenter = new FilterPresenter(filtersElement, filterModel, pointsModel);
 
 let statisticsComponent = null;
@@ -99,7 +107,8 @@ newPointAddButton.addEventListener('click', (evt) => { //нажатие кноп
   remove(siteMenuComponent); // удаление меню
   render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовка меню
   siteMenuComponent.setMenuClickHandler(handleSiteMenuClick); // установка обработчиков
-  tripPresenter.createPoint();
+  tripPresenter.createPoint(); //создание новой точки
+  newPointAddButton.disabled = true; //блокировка кнопки пока открыта форма добавления
 });
 
 pointsModel.init().finally(() => {

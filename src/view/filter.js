@@ -1,13 +1,13 @@
 import AbstractView from './abstract.js';
 import { FilterType } from '../utils/const.js';
 
-const createFiltersTemplate = (currentFilterType, AreFiltersAvailable) => (
+const createFiltersTemplate = (currentFilterType, filtersStatus) => (
   `<form class="trip-filters" action="#" method="get">
   <div class="trip-filters__filter">
     <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio"
     name="trip-filter" value="everything"
     ${currentFilterType === FilterType.EVERYTHING ? 'checked' : ''}
-    ${AreFiltersAvailable.EVERYTHING === true ? '' : 'disabled'}>
+    ${filtersStatus.EVERYTHING === true ? '' : 'disabled'}>
     <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
   </div>
 
@@ -15,7 +15,7 @@ const createFiltersTemplate = (currentFilterType, AreFiltersAvailable) => (
     <input id="filter-future" class="trip-filters__filter-input  visually-hidden" type="radio"
     name="trip-filter" value="future"
     ${currentFilterType === FilterType.FUTURE ? 'checked' : ''}
-    ${AreFiltersAvailable.FUTURE === true ? '' : 'disabled'}>
+    ${filtersStatus.FUTURE === true ? '' : 'disabled'}>
     <label class="trip-filters__filter-label" for="filter-future">Future</label>
   </div>
 
@@ -23,7 +23,7 @@ const createFiltersTemplate = (currentFilterType, AreFiltersAvailable) => (
     <input id="filter-past" class="trip-filters__filter-input  visually-hidden" type="radio"
     name="trip-filter" value="past"
     ${currentFilterType === FilterType.PAST ? 'checked' : ''}
-    ${AreFiltersAvailable.PAST === true ? '' : 'disabled'}>
+    ${filtersStatus.PAST === true ? '' : 'disabled'}>
     <label class="trip-filters__filter-label" for="filter-past">Past</label>
   </div>
 
@@ -33,17 +33,17 @@ const createFiltersTemplate = (currentFilterType, AreFiltersAvailable) => (
 
 export default class Filter extends AbstractView {
   #currentFilterType = null;
-  #AreFiltersAvailable = {};
+  #filtersStatus = {};
 
-  constructor(currentFilterType, AreFiltersAvailable) {
+  constructor(currentFilterType, filtersStatus) {
     super();
 
     this.#currentFilterType = currentFilterType;
-    this.#AreFiltersAvailable = AreFiltersAvailable;
+    this.#filtersStatus = filtersStatus;
   }
 
   get template() {
-    return createFiltersTemplate(this.#currentFilterType, this.#AreFiltersAvailable);
+    return createFiltersTemplate(this.#currentFilterType, this.#filtersStatus);
   }
 
   #filterTypeChangeHandler = (evt) => {

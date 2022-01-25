@@ -1,6 +1,6 @@
 import Observer from './observer.js';
 import dayjs from 'dayjs';
-import { UpdateType, BLANK_POSSIBLE_OFFERS } from '../utils/const.js';
+import { UpdateType, BLANK_POSSIBLE_OFFERS_DATA } from '../utils/const.js';
 import { getDestinationsFromPoints } from '../utils/route.js';
 
 export default class Points extends Observer {
@@ -28,7 +28,7 @@ export default class Points extends Observer {
       const offers = await this.#apiService.offers;
       this.#offers = this.#adaptOffersToClient(offers);
     } catch(err){
-      this.#offers = BLANK_POSSIBLE_OFFERS;
+      this.#offers = BLANK_POSSIBLE_OFFERS_DATA;
     }
 
     try {

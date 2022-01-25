@@ -7,7 +7,7 @@ export const ARRAY_INDEX_TWO = 2;
 export const TYPES = ['taxi', 'bus', 'train', 'ship', 'transport', 'drive', 'flight',
   'check-in', 'sightseeing', 'restaurant'];
 
-export const BLANK_POSSIBLE_OFFERS = {
+export const BLANK_POSSIBLE_OFFERS_DATA = {
   bus: [],
   'check-in': [],
   drive: [],
@@ -74,13 +74,13 @@ export const MenuItem = {
   STATISTICS: 'stats',
 };
 
-export const blankPossibleDestinations = [{
-  name: 'London',
-  description: 'London is the capital of the UK',
+export const BLANK_POSSIBLE_DESTINATIONS_DATA = [{
+  name: '',
+  description: '',
   pictures: {src: '', description: ''},
 }];
 
-export const TripType = {
+export const POSSIBLE_TYPES_DATA = {
   TAXI: 'taxi',
   BUS: 'bus',
   TRAIN: 'train',

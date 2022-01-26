@@ -7,10 +7,10 @@ export default class PointNew {
   #editFormComponent = null;
   #changeData = null;
 
-  constructor(eventListContainer, changeData, cb) {
+  constructor(eventListContainer, changeData, activateNewPointButton) {
     this.#eventListContainer = eventListContainer;
     this.#changeData = changeData;
-    this.cb = cb;
+    this.activateNewPointButton = activateNewPointButton;
   }
 
   init = (point, offers, destinations) => {
@@ -40,18 +40,18 @@ export default class PointNew {
       UpdateType.MINOR,
       point,
     );
-    this.cb();
+    this.activateNewPointButton();
   }
 
   #handleAddFormCancel = () => { // обработчик на кнопку Cancel для удаления формы добавления
     this.destroy();
-    this.cb();
+    this.activateNewPointButton();
   }
 
   #escKeyDownHandler = (evt) => {
     if (identifyEscapeKey(evt)) {
       this.destroy();
-      this.cb();
+      this.activateNewPointButton();
     }
   }
 

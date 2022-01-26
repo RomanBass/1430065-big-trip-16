@@ -64,3 +64,19 @@ export const remove = (component) => {
   component.element.remove();
   component.removeElement();
 };
+
+const ESCAPE_KEY_FLAG = {
+  TRUE: true,
+  FALSE: false,
+};
+
+export const identifyEscapeKey = (evt) => {
+  let key = ESCAPE_KEY_FLAG.FALSE;
+
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    key = ESCAPE_KEY_FLAG.TRUE;
+    evt.preventDefault();
+  }
+
+  return key;
+};

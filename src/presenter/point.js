@@ -1,6 +1,6 @@
 import PointView from '../view/point';
 import EditFormView from '../view/edit-form.js';
-import { render, RenderPosition, replace, remove } from '../utils/render';
+import { render, RenderPosition, replace, remove, identifyEscapeKey } from '../utils/render';
 import { BlankPoint } from '../utils/const';
 import { UserAction, UpdateType } from '../utils/const.js';
 
@@ -87,8 +87,7 @@ export default class Point {
   }
 
   #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
+    if (identifyEscapeKey(evt)) {
       this.#editFormComponent.reset(this.#point); //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
       this.#replaceEditFormToPoint();
       document.removeEventListener('keydown', this.#escKeyDownHandler);

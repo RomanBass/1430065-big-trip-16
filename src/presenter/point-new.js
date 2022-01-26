@@ -1,5 +1,5 @@
 import EditFormView from '../view/edit-form.js';
-import { render, RenderPosition, remove } from '../utils/render';
+import { render, RenderPosition, remove, identifyEscapeKey } from '../utils/render';
 import { UserAction, UpdateType } from '../utils/const.js';
 
 export default class PointNew {
@@ -49,9 +49,9 @@ export default class PointNew {
   }
 
   #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
+    if (identifyEscapeKey(evt)) {
       this.destroy();
+      this.cb();
     }
   }
 

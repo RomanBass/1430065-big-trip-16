@@ -463,7 +463,7 @@ export default class EditForm extends SmartView {
     this.updateData(point);
   }
 
-  removeElement () {
+  removeElement () { //расширяет метод removeElement() удалениями флетпикров
     super.removeElement();
 
     if (this.#dateFromPicker) {

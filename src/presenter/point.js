@@ -29,22 +29,22 @@ export default class Point {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
-    const prevEditFormComponent = this.#editFormComponent;
+    // const prevEditFormComponent = this.#editFormComponent;
 
     this.#pointComponent = new PointView(point, offers);
-    this.#editFormComponent = new EditFormView(point, offers, destinations);
+    // this.#editFormComponent = new EditFormView(point, offers, destinations);
 
-    this.#pointComponent.setPointRollupButtonClickHandler(this.#handlePointToEditFormClick);
-    this.#editFormComponent.setEditFormRollupButtonClickHandler(this.#handleEditFormToPointClick);
-    this.#editFormComponent.setEditFormSubmitButtonClickHandler(this.#handleEditFormSubmit);
-    this.#editFormComponent.setDeletePointClickHandler(this.#handleDeletePoint);
+    this.#pointComponent.setPointRollupButtonClickHandler(() => this.#replacePointToForm(point, offers, destinations));
+    // this.#editFormComponent.setEditFormRollupButtonClickHandler(this.#handleEditFormToPointClick);
+    // this.#editFormComponent.setEditFormSubmitButtonClickHandler(this.#handleEditFormSubmit);
+    // this.#editFormComponent.setDeletePointClickHandler(this.#handleDeletePoint);
     this.#pointComponent.setFavoriteButtonClickHandler(this.#handleFavoriteButtonClick);
 
     if (this.#point.id === BlankPoint.id) { // чтобы не отрисовывалась точка по данным формы добавления
       return;
     }
 
-    if (prevPointComponent === null || prevEditFormComponent === null) {
+    if (prevPointComponent === null) {
       render(this.#eventListContainer, this.#pointComponent, RenderPosition.BEFOREEND);
       return;
     }
@@ -53,12 +53,12 @@ export default class Point {
       replace(this.#pointComponent, prevPointComponent);
     }
 
-    if (this.#mode === Mode.EDITING) {
-      replace(this.#editFormComponent, prevEditFormComponent);
-    }
+    // if (this.#mode === Mode.EDITING) {
+    //   replace(this.#editFormComponent, prevEditFormComponent);
+    // }
 
     remove(prevPointComponent);
-    remove(prevEditFormComponent);
+    // remove(prevEditFormComponent);
   }
 
   destroy = () => {
@@ -66,7 +66,13 @@ export default class Point {
     remove(this.#editFormComponent);
   }
 
-  #replacePointToForm = () => {
+  #replacePointToForm = (point, offers, destinations) => {
+
+    this.#editFormComponent = new EditFormView(point, offers, destinations);
+    this.#editFormComponent.setEditFormRollupButtonClickHandler(this.#handleEditFormToPointClick);
+    this.#editFormComponent.setEditFormSubmitButtonClickHandler(this.#handleEditFormSubmit);
+    this.#editFormComponent.setDeletePointClickHandler(this.#handleDeletePoint);
+
     replace(this.#editFormComponent, this.#pointComponent.element);
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#changeMode();
@@ -77,6 +83,8 @@ export default class Point {
     replace(this.#pointComponent, this.#editFormComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
+    remove(this.#editFormComponent);
+    this.#editFormComponent = null;
   }
 
   resetView = () => {
@@ -100,7 +108,7 @@ export default class Point {
   }
 
   #handleEditFormToPointClick = () => { // клик по стрелке закрывает форму редактирования и открывает точку маршрута
-    this.#editFormComponent.reset(this.#point); //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
+    //this.#editFormComponent.reset(this.#point); //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
     this.#replaceEditFormToPoint();
   }
 

@@ -25,13 +25,16 @@ export default class Point {
     this.#mode = Mode.DEFAULT;
   }
 
-  init = (point, offers, destinations) => {
+//init = (point, offers, destinations) => {
+  init = (point, offers) => {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
     this.#pointComponent = new PointView(point, offers);
 
-    this.#pointComponent.setPointRollupButtonClickHandler(() => this.#replacePointToForm(point, offers, destinations));
+ // this.#pointComponent.setPointRollupButtonClickHandler(() => this.#replacePointToForm(point, offers, destinations));
+    this.#pointComponent.setPointRollupButtonClickHandler(this.#handlePointToEditFormClick);
+
     this.#pointComponent.setFavoriteButtonClickHandler(this.#handleFavoriteButtonClick);
 
     if (this.#point.id === BlankPoint.id) { // чтобы не отрисовывалась точка по данным формы добавления

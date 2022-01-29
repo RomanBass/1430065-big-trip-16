@@ -29,15 +29,9 @@ export default class Point {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
-    // const prevEditFormComponent = this.#editFormComponent;
-
     this.#pointComponent = new PointView(point, offers);
-    // this.#editFormComponent = new EditFormView(point, offers, destinations);
 
     this.#pointComponent.setPointRollupButtonClickHandler(() => this.#replacePointToForm(point, offers, destinations));
-    // this.#editFormComponent.setEditFormRollupButtonClickHandler(this.#handleEditFormToPointClick);
-    // this.#editFormComponent.setEditFormSubmitButtonClickHandler(this.#handleEditFormSubmit);
-    // this.#editFormComponent.setDeletePointClickHandler(this.#handleDeletePoint);
     this.#pointComponent.setFavoriteButtonClickHandler(this.#handleFavoriteButtonClick);
 
     if (this.#point.id === BlankPoint.id) { // чтобы не отрисовывалась точка по данным формы добавления
@@ -53,12 +47,7 @@ export default class Point {
       replace(this.#pointComponent, prevPointComponent);
     }
 
-    // if (this.#mode === Mode.EDITING) {
-    //   replace(this.#editFormComponent, prevEditFormComponent);
-    // }
-
     remove(prevPointComponent);
-    // remove(prevEditFormComponent);
   }
 
   destroy = () => {
@@ -108,7 +97,6 @@ export default class Point {
   }
 
   #handleEditFormToPointClick = () => { // клик по стрелке закрывает форму редактирования и открывает точку маршрута
-    //this.#editFormComponent.reset(this.#point); //...производит сброс изменённых данных на начальные при выходе из формы без сохранения
     this.#replaceEditFormToPoint();
   }
 

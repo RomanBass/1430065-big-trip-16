@@ -17,6 +17,8 @@ export default class Point {
   #changeMode = null;
   #mode = null;
   #point = null;
+  #offers = null;
+  #destinations = null;
 
   constructor(eventListContainer, changeData, changeMode) {
     this.#eventListContainer = eventListContainer;
@@ -25,16 +27,15 @@ export default class Point {
     this.#mode = Mode.DEFAULT;
   }
 
-//init = (point, offers, destinations) => {
-  init = (point, offers) => {
+  init = (point, offers, destinations) => {
     this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
 
     const prevPointComponent = this.#pointComponent;
     this.#pointComponent = new PointView(point, offers);
 
- // this.#pointComponent.setPointRollupButtonClickHandler(() => this.#replacePointToForm(point, offers, destinations));
     this.#pointComponent.setPointRollupButtonClickHandler(this.#handlePointToEditFormClick);
-
     this.#pointComponent.setFavoriteButtonClickHandler(this.#handleFavoriteButtonClick);
 
     if (this.#point.id === BlankPoint.id) { // чтобы не отрисовывалась точка по данным формы добавления
@@ -58,9 +59,9 @@ export default class Point {
     remove(this.#editFormComponent);
   }
 
-  #replacePointToForm = (point, offers, destinations) => {
+  #replacePointToForm = () => {
 
-    this.#editFormComponent = new EditFormView(point, offers, destinations);
+    this.#editFormComponent = new EditFormView(this.#point, this.#offers, this.#destinations);
     this.#editFormComponent.setEditFormRollupButtonClickHandler(this.#handleEditFormToPointClick);
     this.#editFormComponent.setEditFormSubmitButtonClickHandler(this.#handleEditFormSubmit);
     this.#editFormComponent.setDeletePointClickHandler(this.#handleDeletePoint);

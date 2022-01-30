@@ -68,9 +68,8 @@ export const remove = (component) => {
 export const isEscEvent = (evt) => {
   let escEvent = false;
 
-  if (evt.escEvent === 'Escape' || evt.escEvent === 'Esc') {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
     escEvent = true;
-    evt.preventDefault();
   }
 
   return escEvent;

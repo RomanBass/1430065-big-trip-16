@@ -11,6 +11,7 @@ import StatisticsView from './view/statistics.js';
 import { getMoneyByTypeData, getPointsNumberByTypeData, getDurationByTypeData}
   from  './utils/statistics.js';
 import ApiService from './api.js';
+import { makeElementDisabled, makeElementEnabled } from './utils/common.js';
 
 const AUTHORIZATION = 'Basic df9df9df8sd8fg8s';
 const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
@@ -50,7 +51,7 @@ const tripPresenter = new TripPresenter(
   pointsModel,
   filterModel,
   () => {
-    newPointAddButton.disabled = false;
+    makeElementEnabled(newPointAddButton);
   }
 );
 
@@ -97,7 +98,7 @@ pointsModel.addObserver(() => {
   }
 });
 
-newPointAddButton.disabled = true; //блокировка кнопки добавления точки на время загрузки данных
+makeElementDisabled(newPointAddButton); //блокировка кнопки добавления точки на время загрузки данных
 
 newPointAddButton.addEventListener('click', (evt) => { //нажатие кнопки добавления точки
   evt.preventDefault();
@@ -108,11 +109,11 @@ newPointAddButton.addEventListener('click', (evt) => { //нажатие кноп
   render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовка меню
   siteMenuComponent.setMenuClickHandler(handleSiteMenuClick); // установка обработчиков
   tripPresenter.createPoint(); //создание новой точки
-  newPointAddButton.disabled = true; //блокировка кнопки пока открыта форма добавления
+  makeElementDisabled(newPointAddButton); //блокирует кнопку добавления точек, пока открыта форма добавления
 });
 
 pointsModel.init().finally(() => {
   render(menuElement, siteMenuComponent, RenderPosition.BEFOREEND); // отрисовка меню Table Stats
   siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
-  newPointAddButton.disabled = false; //включает кнопку добавления точек после загрузки данных
+  makeElementEnabled(newPointAddButton); //включает кнопку добавления точек после загрузки данных
 });

@@ -25,14 +25,16 @@ export default class Trip {
   #loadingComponent = new LoadingView();
   #pointNewPresenter = null;
   #serverUnavailableComponent = new ServerAnavailableMessage();
+  #activateNewPointButton = null;
 
   constructor(tripContainer, pointsModel, filterModel, activateNewPointButton) {
     this.#pointsModel = pointsModel;
     this.#filtersModel = filterModel;
     this.#tripContainer = tripContainer;
+    this.#activateNewPointButton = activateNewPointButton;
 
     this.#pointNewPresenter = new PointNewPresenter(
-      this.#eventsListComponent, this.#handleViewAction, activateNewPointButton
+      this.#eventsListComponent, this.#handleViewAction, this.#activateNewPointButton
     );
 
   }

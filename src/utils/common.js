@@ -16,3 +16,7 @@ export const getDuration = (startDate, finishDate) => { // преобразов�
   }
   return duration;
 };
+
+export const makeElementEnabled = (element) => (element.disabled = false);
+export const makeElementDisabled = (element) => (element.disabled = true);
+

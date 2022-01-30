@@ -52,7 +52,7 @@ const tripPresenter = new TripPresenter(
   filterModel,
   () => {
     makeElementEnabled(newPointAddButton);
-  }
+  },
 );
 
 const filterPresenter = new FilterPresenter(filtersElement, filterModel, pointsModel);
